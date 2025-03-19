@@ -54,6 +54,12 @@
     </Compile>
     <Compile Include="Modèles\Coup.cs" />
     <Compile Include="Modèles\Piece.cs" />
+    <Compile Include="Modèles\Pièces\Cavalier.cs" />
+    <Compile Include="Modèles\Pièces\Fou.cs" />
+    <Compile Include="Modèles\Pièces\Pion.cs" />
+    <Compile Include="Modèles\Pièces\Reine.cs" />
+    <Compile Include="Modèles\Pièces\Roi.cs" />
+    <Compile Include="Modèles\Pièces\Tour.cs" />
     <Compile Include="Modèles\Position.cs" />
     <Compile Include="Modèles\TypePiece.cs" />
     <Compile Include="Program.cs" />

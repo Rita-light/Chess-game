@@ -16,10 +16,7 @@ namespace Chess.Modèles
             Position = position;
         }
 
-        protected Piece() : this(true, new Position(0, 0))
-        { }
-
-        public void SetPosition(Position nouvellePosition)
+        public virtual void SetPosition(Position nouvellePosition)
         {
             if (nouvellePosition == null)
                 throw new ArgumentNullException(nameof(nouvellePosition));
@@ -40,6 +37,5 @@ namespace Chess.Modèles
             return $"{Type} {couleur} en {Position}";
             // Exemple : Reine Blanche en (2, 4)
         }
-
     }
 }
