@@ -53,6 +53,7 @@
       <DependentUpon>FenetrePrincipale.cs</DependentUpon>
     </Compile>
     <Compile Include="Modèles\Coup.cs" />
+    <Compile Include="Modèles\Joueur.cs" />
     <Compile Include="Modèles\Piece.cs" />
     <Compile Include="Modèles\Pièces\Cavalier.cs" />
     <Compile Include="Modèles\Pièces\Fou.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Modèles\Pièces\Tour.cs" />
     <Compile Include="Modèles\Plateau.cs" />
     <Compile Include="Modèles\Position.cs" />
+    <Compile Include="Modèles\Score.cs" />
     <Compile Include="Modèles\TypePiece.cs" />
     <Compile Include="PlateauGUI.cs">
       <SubType>Form</SubType>
