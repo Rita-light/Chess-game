@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Modèles\Coup.cs" />
     <Compile Include="Modèles\Joueur.cs" />
+    <Compile Include="Modèles\Partie.cs" />
     <Compile Include="Modèles\Piece.cs" />
     <Compile Include="Modèles\Pièces\Cavalier.cs" />
     <Compile Include="Modèles\Pièces\Fou.cs" />

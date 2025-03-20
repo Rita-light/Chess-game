@@ -11,7 +11,7 @@
 
         public override bool EstMouvementValide(Coup coup)
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public bool EstEnPassantValide(Coup coup, Position enPassantPosition)
