@@ -1,4 +1,6 @@
-﻿namespace Chess.Modèles.Pièces
+﻿using System;
+
+namespace Chess.Modèles.Pièces
 {
     public class Pion : Piece
     {
@@ -11,7 +13,25 @@
 
         public override bool EstMouvementValide(Coup coup)
         {
-            return true;
+            int dx = coup.Destination.X - coup.Depart.X;
+            int dy = coup.Destination.Y - coup.Depart.Y;
+            int direction = IsWhite ? -1 : 1;
+
+            if (dx == 0 && dy == direction)
+                return true;
+            if (dx == 0 && dy == 2 * direction && !HasMoved)
+                return true;
+            if (EstCoupDeCapture(coup))
+                return true;
+            return false;
+        }
+
+        public bool EstCoupDeCapture(Coup coup)
+        {
+            int dx = coup.Destination.X - coup.Depart.X;
+            int dy = coup.Destination.Y - coup.Depart.Y;
+            int direction = IsWhite ? -1 : 1;
+            return Math.Abs(dx) == 1 && dy == direction;
         }
 
         public bool EstEnPassantValide(Coup coup, Position enPassantPosition)
@@ -27,7 +47,6 @@
 
         public override string ToString()
         {
-            // Exemple d'affichage : "Pion Blanc en (3, 5)"
             string couleur = IsWhite ? "Blanc" : "Noir";
             return $"Pion {couleur} en {Position}";
         }
