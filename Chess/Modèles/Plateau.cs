@@ -117,7 +117,34 @@ namespace Chess.Modèles
 
         public void AppliquerCoup(Coup coup)
         {
-            throw new NotImplementedException();
+            if (coup == null)
+                throw new ArgumentNullException(nameof(coup));
+
+            // Récupérer la pièce à déplacer depuis la position de départ.
+            Piece pieceDepart = GetPiece(coup.Depart);
+            if (pieceDepart == null)
+                throw new InvalidOperationException("Aucune pièce à déplacer à la position de départ.");
+
+            // Si une pièce se trouve déjà sur la destination, c'est une capture.
+            Piece pieceDestination = GetPiece(coup.Destination);
+            if (pieceDestination != null)
+            {
+                SetPiece(coup.Destination, null);
+                // TODO: Modifier l'état du jeu : historique de coups, scores
+            }
+
+            pieceDepart.SetPosition(coup.Destination);
+
+            // Placer la pièce déplacée sur la case destination.
+            SetPiece(coup.Destination, pieceDepart);
+
+            // Vider la case de départ.
+            SetPiece(coup.Depart, null);
+
+            // TODO:
+            // - Promotion d'un pion
+            // - En passant
+            // - Roque
         }
 
         public Piece GetPiece(Position position)
