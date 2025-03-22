@@ -25,3 +25,5 @@ C:\Users\User\OneDrive - Cegep de Lanaudiere\Cours 420.B0\Hiver 2025\Dev Objet\C
 C:\Users\User\OneDrive - Cegep de Lanaudiere\Cours 420.B0\Hiver 2025\Dev Objet\Chess\obj\Debug\Chess.csproj.CoreCompileInputs.cache
 C:\Users\User\OneDrive - Cegep de Lanaudiere\Cours 420.B0\Hiver 2025\Dev Objet\Chess\obj\Debug\Chess.exe
 C:\Users\User\OneDrive - Cegep de Lanaudiere\Cours 420.B0\Hiver 2025\Dev Objet\Chess\obj\Debug\Chess.pdb
+C:\Users\User\Documents\GitHub\Cegep-joliette-POO\Chess\obj\Debug\Chess.FenetrePrincipale.resources
+C:\Users\User\Documents\GitHub\Cegep-joliette-POO\Chess\obj\Debug\Chess.SelectionnerJoueurGUI.resources

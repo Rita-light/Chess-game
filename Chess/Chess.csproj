@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controlleurs\JeuController.cs" />
     <Compile Include="FenetrePrincipale.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +88,9 @@
     <Compile Include="StatistiqueGUI.Designer.cs">
       <DependentUpon>StatistiqueGUI.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FenetrePrincipale.resx">
+      <DependentUpon>FenetrePrincipale.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -96,6 +100,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SelectionnerJoueurGUI.resx">
+      <DependentUpon>SelectionnerJoueurGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -108,9 +115,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controlleurs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
