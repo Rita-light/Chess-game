@@ -13,26 +13,16 @@ namespace Chess.Modèles.Pièces
 
         public override bool EstMouvementValide(Coup coup)
         {
-            int dx = coup.Destination.X - coup.Depart.X;
-            int dy = coup.Destination.Y - coup.Depart.Y;
+            int dx = Math.Abs(coup.Destination.X - Position.X);
+            int dy = Math.Abs(coup.Destination.Y - Position.Y);
 
-            if (Math.Abs(dx) <= 1 && Math.Abs(dy) <= 1)
-            {
+            // Déplacement normal : 1 case dans toutes les directions
+            if (dx <= 1 && dy <= 1)
                 return true;
-            }
 
-            if (!HasMoved && dy == 0 && Math.Abs(dx) == 2)
-            {
-                if (dx == 2)
-                {
-                    // Petit roque
-                    return EstPetitRoque();
-                } else if (dx == -2)
-                {
-                    // Grand roque
-                    return EstGrandRoque();
-                }
-            }
+            // Tentative de roque : déplacement horizontal de 2 cases
+            if (dx == 2 && dy == 0)
+                return true;
 
             return false;
         }
@@ -43,17 +33,88 @@ namespace Chess.Modèles.Pièces
             HasMoved = true;
         }
 
-        public bool EstPetitRoque()
+        //-------------------------------------------------------------------------
+        // Validation du roque
+        //-------------------------------------------------------------------------
+
+        /// <summary>
+        /// Valide le roque en s'assurant que le Roi n'a pas bougé, que le déplacement est de 2 cases sur la même rangée,
+        /// puis en déléguant à EstPetitRoque ou EstGrandRoque.
+        /// </summary>
+        public bool EstRoqueValide(Coup coup, Plateau plateau)
         {
-            // TODO: Ajouter la vérification du petit roque.
+            if (HasMoved)
+                return false;
+
+            int dx = coup.Destination.X - Position.X;
+            if (Math.Abs(dx) != 2 || coup.Destination.Y != Position.Y)
+                return false;
+
+            return dx > 0 ? EstPetitRoque(plateau) : EstGrandRoque(plateau);
+        }
+
+        /// <summary>
+        /// Vérifie les conditions pour le petit roque : la tour à l'extrémité droite doit être présente et immobile,
+        /// et les cases entre le Roi et la Tour doivent être libres.
+        /// </summary>
+        public bool EstPetitRoque(Plateau plateau)
+        {
+            Position tourPos = new Position(7, Position.Y);
+            Piece tourPiece = plateau.GetPiece(tourPos);
+            if (!PeutParticiperAuRoque(tourPiece))
+                return false;
+
+            Position case1 = new Position(Position.X + 1, Position.Y);
+            Position case2 = new Position(Position.X + 2, Position.Y);
+            if (plateau.GetPiece(case1) != null || plateau.GetPiece(case2) != null)
+                return false;
+
+            // TODO: Vérifier que le Roi et les cases traversées ne sont pas attaquées.
             return true;
         }
 
-        public bool EstGrandRoque()
+        /// <summary>
+        /// Vérifie les conditions pour le grand roque : la tour à l'extrémité gauche doit être présente et immobile,
+        /// et les cases entre le Roi et la Tour doivent être libres.
+        /// </summary>
+        public bool EstGrandRoque(Plateau plateau)
         {
-            // TODO: Ajouter la vérification du grand roque.
+            Position tourPos = new Position(0, Position.Y);
+            Piece tourPiece = plateau.GetPiece(tourPos);
+            if (!PeutParticiperAuRoque(tourPiece))
+                return false;
+
+            Position case1 = new Position(Position.X - 1, Position.Y);
+            Position case2 = new Position(Position.X - 2, Position.Y);
+            Position case3 = new Position(Position.X - 3, Position.Y);
+            if (plateau.GetPiece(case1) != null || plateau.GetPiece(case2) != null || plateau.GetPiece(case3) != null)
+                return false;
+
+            // TODO: Vérifier que le Roi et les cases traversées ne sont pas attaquées.
             return true;
         }
+
+        //-------------------------------------------------------------------------
+        // Méthode utilitaire pour le roque
+        //-------------------------------------------------------------------------
+
+        /// <summary>
+        /// Vérifie si la pièce fournie (supposée être une tour) peut participer au roque.
+        /// </summary>
+        private bool PeutParticiperAuRoque(Piece tourPiece)
+        {
+            if (tourPiece == null || tourPiece.Type != TypePiece.Tour || tourPiece.IsWhite != IsWhite)
+                return false;
+
+            if (tourPiece is Tour tour && !tour.HasMoved)
+                return true;
+
+            return false;
+        }
+
+        //-------------------------------------------------------------------------
+        // Overrides
+        //-------------------------------------------------------------------------
 
         public override string ToString()
         {
