@@ -13,26 +13,17 @@ namespace Chess.Modèles.Pièces
 
         public override bool EstMouvementValide(Coup coup)
         {
-            int dx = coup.Destination.X - coup.Depart.X;
-            int dy = coup.Destination.Y - coup.Depart.Y;
+            int dx = Math.Abs(coup.Destination.X - Position.X);
+            int dy = Math.Abs(coup.Destination.Y - Position.Y);
 
-            if (Math.Abs(dx) <= 1 && Math.Abs(dy) <= 1)
-            {
+            // Déplacement normal : une case dans toutes les directions
+            if (dx <= 1 && dy <= 1)
                 return true;
-            }
 
-            if (!HasMoved && dy == 0 && Math.Abs(dx) == 2)
-            {
-                if (dx == 2)
-                {
-                    // Petit roque
-                    return EstPetitRoque();
-                } else if (dx == -2)
-                {
-                    // Grand roque
-                    return EstGrandRoque();
-                }
-            }
+            // Tentative de roque : déplacement horizontal de 2 cases
+            // -> La validation détaillée est dans EstRoqueValide.
+            if (dx == 2 && dy == 0)
+                return true;
 
             return false;
         }
@@ -43,16 +34,73 @@ namespace Chess.Modèles.Pièces
             HasMoved = true;
         }
 
-        public bool EstPetitRoque()
+        public bool EstRoqueValide(Coup coup, Plateau plateau)
         {
-            // TODO: Ajouter la vérification du petit roque.
+            // Le roi ne doit pas avoir bougé
+            if (HasMoved)
+                return false;
+
+            // Vérifier qu'on se déplace bien de 2 cases sur la même rangée
+            int dx = coup.Destination.X - Position.X;
+            if (Math.Abs(dx) != 2 || coup.Destination.Y != Position.Y)
+                return false;
+
+            // Selon le signe de dx, on détecte un petit ou grand roque
+            return (dx > 0) ? EstPetitRoque(plateau) : EstGrandRoque(plateau);
+        }
+
+        public bool EstPetitRoque(Plateau plateau)
+        {
+            // Trouver la tour sur la même ligne, à l'extrême droite (X=7)
+            Position tourPos = new Position(7, Position.Y);
+            Piece tourPiece = plateau.GetPiece(tourPos);
+            if (!PeutParticiperAuRoque(tourPiece))
+                return false;
+
+            // Vérifier que les deux cases entre le roi et la tour sont libres
+            int y = Position.Y;
+            Position case1 = new Position(Position.X + 1, y);
+            Position case2 = new Position(Position.X + 2, y);
+
+            if (plateau.GetPiece(case1) != null || plateau.GetPiece(case2) != null)
+                return false;
+
+            // TODO: Vérifier que ces cases (et le roi) ne sont pas attaquées.
             return true;
         }
 
-        public bool EstGrandRoque()
+        public bool EstGrandRoque(Plateau plateau)
         {
-            // TODO: Ajouter la vérification du grand roque.
+            // Trouver la tour sur la même ligne, à l'extrême gauche (X=0)
+            Position tourPos = new Position(0, Position.Y);
+            Piece tourPiece = plateau.GetPiece(tourPos);
+            if (!PeutParticiperAuRoque(tourPiece))
+                return false;
+
+            // Vérifier que les 3 cases entre le roi et la tour sont libres
+            int y = Position.Y;
+            Position case1 = new Position(Position.X - 1, y);
+            Position case2 = new Position(Position.X - 2, y);
+            Position case3 = new Position(Position.X - 3, y);
+
+            if (plateau.GetPiece(case1) != null || plateau.GetPiece(case2) != null || plateau.GetPiece(case3) != null)
+                return false;
+
+            // TODO: Vérifier que ces cases (et le roi) ne sont pas attaquées.
             return true;
+        }
+
+        // Vérifie si la tour est compatible avec le Roi
+        private bool PeutParticiperAuRoque(Piece tourPiece)
+        {
+            if (tourPiece == null || tourPiece.Type != TypePiece.Tour || tourPiece.IsWhite != IsWhite)
+                return false;
+
+            // On suppose que la Tour a aussi un booléen HasMoved, géré de la même façon
+            if (tourPiece is Tour tour && tour.HasMoved == false)
+                return true;
+
+            return false;
         }
 
         public override string ToString()

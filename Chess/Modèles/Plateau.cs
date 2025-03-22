@@ -39,36 +39,156 @@ namespace Chess.Modèles
 
         public bool EstCoupValide(Coup coup)
         {
+            if (!ValiderCoupBasique(coup, out Piece pieceDepart, out Piece pieceDestination))
+                return false;
+
+            // Vérifier que le pattern du coup correspond bien au déplacement de la pièce.
+            if (!pieceDepart.EstMouvementValide(coup))
+                return false;
+
+            if (!ValiderCheminOuRoque(coup, pieceDepart))
+                return false;
+
+            if (!ValiderCapturePion(coup, pieceDepart, pieceDestination))
+                return false;
+
+            // TODO: ajouter d'autres vérifications globales (échec, etc.)
+            return true;
+        }
+
+        public void AppliquerCoup(Coup coup)
+        {
             if (coup == null)
                 throw new ArgumentNullException(nameof(coup));
+
+            Piece pieceDepart = GetPiece(coup.Depart);
+            if (pieceDepart == null)
+                throw new InvalidOperationException("Aucune pièce à déplacer.");
+
+            bool estRoque = EstUnRoque(coup, pieceDepart);
+
+            EffectuerCapture(coup);
+
+            // Déplacer la pièce de départ
+            pieceDepart.SetPosition(coup.Destination);
+            SetPiece(coup.Destination, pieceDepart);
+            SetPiece(coup.Depart, null);
+
+            if (estRoque && pieceDepart is Roi)
+                AppliquerRoque(coup);
+
+            // TODO: promotion, en passant, etc.
+        }
+
+        private bool ValiderCoupBasique(Coup coup, out Piece pieceDepart, out Piece pieceDestination)
+        {
+            pieceDepart = null;
+            pieceDestination = null;
+
+            if (coup == null)
+                return false;
 
             if (!EstPositionValide(coup.Depart) || !EstPositionValide(coup.Destination))
                 return false;
 
-            Piece pieceDepart = GetPiece(coup.Depart);
+            pieceDepart = GetPiece(coup.Depart);
             if (pieceDepart == null)
                 return false;
 
-            Piece pieceDestination = GetPiece(coup.Destination);
+            pieceDestination = GetPiece(coup.Destination);
             if (pieceDestination != null && pieceDestination.IsWhite == pieceDepart.IsWhite)
                 return false;
 
-            if (pieceDepart.Type != TypePiece.Cavalier && !EstCheminLibre(coup))
-                return false;
+            return true;
+        }
 
+        private bool ValiderCheminOuRoque(Coup coup, Piece pieceDepart)
+        {
+            if (pieceDepart.Type == TypePiece.Roi)
+            {
+                int dx = Math.Abs(coup.Destination.X - coup.Depart.X);
+                int dy = Math.Abs(coup.Destination.Y - coup.Depart.Y);
+
+                // Roque : 2 cases horizontalement
+                if (dx == 2 && dy == 0)
+                {
+                    Roi roi = (Roi)pieceDepart;
+                    if (!roi.EstRoqueValide(coup, this))
+                        return false;
+                } else
+                {
+                    // Sinon, chemin libre si ce n'est pas un Cavalier.
+                    if (!EstCheminLibre(coup))
+                        return false;
+                }
+            } else if (pieceDepart.Type != TypePiece.Cavalier)
+            {
+                // Tour, Fou, Reine, Pion => besoin d'un chemin libre
+                if (!EstCheminLibre(coup))
+                    return false;
+            }
+            return true;
+        }
+
+        private bool ValiderCapturePion(Coup coup, Piece pieceDepart, Piece pieceDestination)
+        {
             if (pieceDepart.Type == TypePiece.Pion)
             {
                 Pion pion = (Pion)pieceDepart;
-                if (pion.EstCoupDeCapture(coup) && GetPiece(coup.Destination) == null)
+                if (pion.EstCoupDeCapture(coup) && pieceDestination == null)
                     return false;
             }
+            return true;
+        }
 
-            if (!pieceDepart.EstMouvementValide(coup))
+        private bool EstUnRoque(Coup coup, Piece pieceDepart)
+        {
+            if (pieceDepart.Type != TypePiece.Roi)
                 return false;
 
-            // TODO: Vérifications supplémentaires (par exemple, pour l'échec).
+            int dx = Math.Abs(coup.Destination.X - coup.Depart.X);
+            int dy = Math.Abs(coup.Destination.Y - coup.Depart.Y);
+            return (dx == 2 && dy == 0);
+        }
 
-            return true;
+        private void EffectuerCapture(Coup coup)
+        {
+            Piece pieceDestination = GetPiece(coup.Destination);
+            if (pieceDestination != null)
+            {
+                // Retirer la pièce capturée
+                SetPiece(coup.Destination, null);
+            }
+        }
+
+        private void AppliquerRoque(Coup coup)
+        {
+            // Petit roque => tour en (7, Y)
+            if (coup.Destination.X > coup.Depart.X)
+            {
+                Position tourPosDepart = new Position(7, coup.Depart.Y);
+                Piece tour = GetPiece(tourPosDepart);
+                if (tour != null)
+                {
+                    Position tourPosArrivee = new Position(coup.Destination.X - 1, coup.Destination.Y);
+                    tour.SetPosition(tourPosArrivee);
+                    SetPiece(tourPosArrivee, tour);
+                    SetPiece(tourPosDepart, null);
+                }
+            }
+            // Grand roque => tour en (0, Y)
+            else
+            {
+                Position tourPosDepart = new Position(0, coup.Depart.Y);
+                Piece tour = GetPiece(tourPosDepart);
+                if (tour != null)
+                {
+                    Position tourPosArrivee = new Position(coup.Destination.X + 1, coup.Destination.Y);
+                    tour.SetPosition(tourPosArrivee);
+                    SetPiece(tourPosArrivee, tour);
+                    SetPiece(tourPosDepart, null);
+                }
+            }
         }
 
         public bool EstCheminLibre(Coup coup)
@@ -90,26 +210,6 @@ namespace Chess.Modèles
             return true;
         }
 
-        public void AppliquerCoup(Coup coup)
-        {
-            if (coup == null)
-                throw new ArgumentNullException(nameof(coup));
-
-            Piece pieceDepart = GetPiece(coup.Depart);
-            if (pieceDepart == null)
-                throw new InvalidOperationException("Aucune pièce à déplacer.");
-
-            Piece pieceDestination = GetPiece(coup.Destination);
-            if (pieceDestination != null)
-                SetPiece(coup.Destination, null);
-
-            pieceDepart.SetPosition(coup.Destination);
-            SetPiece(coup.Destination, pieceDepart);
-            SetPiece(coup.Depart, null);
-
-            // TODO: Gérer la promotion, l'en passant et le roque.
-        }
-
         public Piece GetPiece(Position position)
         {
             if (position == null || !EstPositionValide(position))
@@ -128,6 +228,5 @@ namespace Chess.Modèles
         {
             return position.X >= 0 && position.X < 8 && position.Y >= 0 && position.Y < 8;
         }
-
     }
 }
