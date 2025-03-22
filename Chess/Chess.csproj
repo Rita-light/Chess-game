@@ -53,6 +53,7 @@
       <DependentUpon>FenetrePrincipale.cs</DependentUpon>
     </Compile>
     <Compile Include="Modèles\Coup.cs" />
+    <Compile Include="Modèles\Gestionnaire.cs" />
     <Compile Include="Modèles\Joueur.cs" />
     <Compile Include="Modèles\Partie.cs" />
     <Compile Include="Modèles\Piece.cs" />

@@ -7,7 +7,12 @@ namespace Chess.Modèles
     {
         private Piece[,] echequier = new Piece[8, 8];
         public Position EnPassantPosition { get; private set; } = null;
-
+        
+        public Plateau()
+        {
+            InitialiserPlateau();
+        }
+        
         public void InitialiserPlateau()
         {
             // Pièces noires

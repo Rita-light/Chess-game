@@ -44,6 +44,8 @@ namespace Chess.Modèles
             throw new System.NotImplementedException();
             // TODO: Mettre en place le plateau avec toutes les pièces à leur position initiale.
         }
+        
+        
 
         public bool ExecuterCoup(Coup coup)
         {
