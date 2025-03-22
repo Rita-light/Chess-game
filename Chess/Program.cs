@@ -48,6 +48,8 @@ namespace Chess
                 Console.WriteLine(score.ToString());
             }
         }
+
+        #endregion
     }
 }
 
