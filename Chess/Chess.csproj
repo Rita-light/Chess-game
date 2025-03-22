@@ -103,6 +103,9 @@
     <EmbeddedResource Include="SelectionnerJoueurGUI.resx">
       <DependentUpon>SelectionnerJoueurGUI.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="StatistiqueGUI.resx">
+      <DependentUpon>StatistiqueGUI.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -22,7 +22,7 @@ namespace Chess
             InitializeComponent();
             
             this.controller = controller; // Enregistre le contrôleur
-            this.statistiqueGUI = new StatistiqueGUI(); // Crée l'instance de la fenêtre StatistiqueGUI
+            this.statistiqueGUI = new StatistiqueGUI(this); // Crée l'instance de la fenêtre StatistiqueGUI
             this.selectionnerJoueurGUI = new SelectionnerJoueurGUI(this); // Initialise avec les joueurs
             this.plateauGUI = new PlateauGUI(); 
         }
@@ -37,5 +37,14 @@ namespace Chess
             return controller.ObtenirListeJoueurs();
         }
 
+        public List<Score> ObtenirListeScores()
+        {
+            return controller.ObtenirListeScore();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            statistiqueGUI.ShowDialog();
+        }
     }
 }

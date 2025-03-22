@@ -29,6 +29,11 @@ namespace Chess.Controlleurs
             return gestionnaire.listJoueurs;
         }
 
+        public List<Score> ObtenirListeScore()
+        {
+            return gestionnaire.listeScores;
+        }
+
         public void AjouterJoueur(string nom)
         {
             if(string.IsNullOrWhiteSpace(nom)){
