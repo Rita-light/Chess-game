@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Chess.Modèles.Pièces
+﻿namespace Chess.Modèles.Pièces
 {
     public class Cavalier : Piece
     {
@@ -11,9 +9,7 @@ namespace Chess.Modèles.Pièces
 
         public override bool EstMouvementValide(Coup coup)
         {
-            int dx = Math.Abs(coup.Destination.X - coup.Depart.X);
-            int dy = Math.Abs(coup.Destination.Y - coup.Depart.Y);
-            return (dx == 2 && dy == 1) || (dx == 1 && dy == 2);
+            return true;
         }
 
         public override string ToString()
@@ -26,6 +22,7 @@ namespace Chess.Modèles.Pièces
         {
             if (obj == null || obj.GetType() != GetType())
                 return false;
+
             Cavalier autre = (Cavalier)obj;
             return IsWhite == autre.IsWhite && Position.Equals(autre.Position);
         }

@@ -11,14 +11,7 @@
 
         public override bool EstMouvementValide(Coup coup)
         {
-            int dx = coup.Destination.X - coup.Depart.X;
-            int dy = coup.Destination.Y - coup.Depart.Y;
-
-            if ((dx == 0 && dy != 0) || (dy == 0 && dx != 0))
-            {
-                return true;
-            }
-            return false;
+            return true;
         }
 
         public override void SetPosition(Position nouvellePosition)

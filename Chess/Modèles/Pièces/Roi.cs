@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Chess.Modèles.Pièces
+﻿namespace Chess.Modèles.Pièces
 {
     public class Roi : Piece
     {
@@ -13,28 +11,7 @@ namespace Chess.Modèles.Pièces
 
         public override bool EstMouvementValide(Coup coup)
         {
-            int dx = coup.Destination.X - coup.Depart.X;
-            int dy = coup.Destination.Y - coup.Depart.Y;
-
-            if (Math.Abs(dx) <= 1 && Math.Abs(dy) <= 1)
-            {
-                return true;
-            }
-
-            if (!HasMoved && dy == 0 && Math.Abs(dx) == 2)
-            {
-                if (dx == 2)
-                {
-                    // Petit roque
-                    return EstPetitRoque();
-                } else if (dx == -2)
-                {
-                    // Grand roque
-                    return EstGrandRoque();
-                }
-            }
-
-            return false;
+            return true;
         }
 
         public override void SetPosition(Position nouvellePosition)
@@ -43,16 +20,16 @@ namespace Chess.Modèles.Pièces
             HasMoved = true;
         }
 
-        public bool EstPetitRoque()
+        // Vérifie si le petit roque est valide pour ce roi
+        public bool EstPetitRoqueValide(Coup coup)
         {
-            // TODO: Ajouter la vérification du petit roque.
-            return true;
+            throw new System.NotImplementedException();
         }
 
-        public bool EstGrandRoque()
+        // Vérifie si le grand roque est valide pour ce roi
+        public bool EstGrandRoqueValide(Coup coup)
         {
-            // TODO: Ajouter la vérification du grand roque.
-            return true;
+            throw new System.NotImplementedException();
         }
 
         public override string ToString()

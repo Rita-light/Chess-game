@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Chess.Modèles.Pièces
+﻿namespace Chess.Modèles.Pièces
 {
     public class Fou : Piece
     {
@@ -11,9 +9,7 @@ namespace Chess.Modèles.Pièces
 
         public override bool EstMouvementValide(Coup coup)
         {
-            int dx = Math.Abs(coup.Destination.X - coup.Depart.X);
-            int dy = Math.Abs(coup.Destination.Y - coup.Depart.Y);
-            return (dx == dy && dx != 0);
+            return true;
         }
 
         public override string ToString()
