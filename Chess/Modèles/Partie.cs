@@ -50,22 +50,64 @@ namespace Chess.Modèles
 
         public bool ExecuterCoup(Coup coup)
         {
-            Boolean coupValide = true;
-            //coupValide = Plateau.EstCoupValide(coup);
+            Boolean coupValide ;
+            if (EstpieceJoueurActuel(coup))
+            {
+                coupValide = Plateau.EstCoupValide(coup); 
+            }
+            else
+            {
+                coupValide = false;
+            }
+            
             if (coupValide)
             {
                 Plateau.AppliquerCoup(coup);
                 HistoriqueCoup.Add(coup);
+                ChangerTour();
                 return true;
             }
 
             return false;
         }
+        
+        public bool EstpieceJoueurActuel(Coup coup)
+        {
+            // Le plateau détermine la couleur de la pièce à la position donnée
+            bool? pieceBlanche = Plateau.EstPieceBlanche(coup);
+
+            // Si aucune pièce n'existe à la position, le coup est invalide
+            if (pieceBlanche == null)
+            {
+                Console.WriteLine("Erreur : Aucun pièce à cette position.");
+                return false;
+            }
+
+            // Vérification selon le joueur actuel
+           if ((JoueurActuel.Equals(JoueurBlanc) && pieceBlanche != true) || (JoueurActuel.Equals(JoueurNoir) && pieceBlanche != false))
+            {
+                Console.WriteLine("Erreur : La pièce ne correspond pas au joueur actuel.");
+                return false;
+            }
+
+            return true; // Coup valide
+        }
+    
+
 
         public void ChangerTour()
         {
-            throw new System.NotImplementedException();
-            // TODO: Alterner JoueurActuel entre JoueurBlanc et JoueurNoir.
+            // Alterner JoueurActuel entre JoueurBlanc et JoueurNoir.
+            
+            if (JoueurActuel.Equals(JoueurBlanc))
+            {
+                JoueurActuel = JoueurNoir;
+            }
+            else
+            {
+                JoueurActuel = JoueurBlanc;
+            }
+
         }
 
         public void AbandonnerPartie(Joueur joueur)

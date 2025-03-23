@@ -99,13 +99,21 @@ namespace Chess.Modèles
             );
         }
 
+        
+        // Méthode Equals pour comparer deux joueurs
         public override bool Equals(object obj)
         {
-            if (obj == null || obj.GetType() != GetType())
+            if (obj == null || GetType() != obj.GetType())
+            {
                 return false;
-            Joueur autre = (Joueur)obj;
-            return Nom.Equals(autre.Nom, StringComparison.OrdinalIgnoreCase);
+            }
+
+            Joueur autreJoueur = (Joueur)obj;
+
+            // Comparaison basée sur l'ID du joueur
+            return this.joueurID == autreJoueur.joueurID;
         }
+
 
         public override int GetHashCode()
         {

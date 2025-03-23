@@ -74,6 +74,21 @@ namespace Chess.Modèles
             // TODO: vérifications globales (échec, mat, etc.)
             return true;
         }
+        
+        /// <summary>
+        /// Verifie la couleur de la pièce à bouger
+        /// </summary>
+        /// <param name="coup"></param>
+        /// <returns></returns>
+        public bool? EstPieceBlanche(Coup coup)
+        {
+            Piece pieceDepart = GetPiece(coup.Depart);
+            if (pieceDepart == null)
+            {
+                return null;
+            }
+            return pieceDepart.IsWhite;
+        }
 
         //-------------------------------------------------------------------------
         // Application du coup sur le plateau
