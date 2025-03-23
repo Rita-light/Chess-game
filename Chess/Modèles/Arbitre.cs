@@ -47,6 +47,17 @@ namespace Chess.Modèles
                     return false;
             }
 
+            if (pieceDepart.Type == TypePiece.Pion)
+            {
+                Pion pion = (Pion)pieceDepart;
+                // Si ce n'est pas un mouvement de capture (diagonale),
+                // alors la case destination DOIT être vide.
+                int dx = coup.Destination.X - coup.Depart.X;
+                if (dx == 0 && pieceDestination != null)
+                    return false;
+            }
+
+
             // Vérification spécifique à la capture d'un pion (en passant inclus)
             if (!ValiderCapturePion(coup, pieceDepart, pieceDestination))
                 return false;

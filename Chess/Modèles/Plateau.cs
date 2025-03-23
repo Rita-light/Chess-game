@@ -88,8 +88,8 @@ namespace Chess.Modèles
             pieceDepart.SetPosition(coup.Destination);
             SetPiece(coup.Destination, pieceDepart);
             SetPiece(coup.Depart, null);
-            
-            
+
+
 
             if (estRoque && pieceDepart is Roi)
                 AppliquerRoque(coup);
