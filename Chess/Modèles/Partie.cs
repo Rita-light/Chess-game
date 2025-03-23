@@ -16,7 +16,7 @@ namespace Chess.Modèles
         public int PointBlanc { get; private set; }
         public int PointNoir { get; private set; }
 
-        public Partie( Joueur joueurBlanc, Joueur joueurNoir)
+        public Partie(Joueur joueurBlanc, Joueur joueurNoir)
         {
             ID = ++dernierID;
             if (joueurBlanc == null)
@@ -45,8 +45,8 @@ namespace Chess.Modèles
             throw new System.NotImplementedException();
             // TODO: Mettre en place le plateau avec toutes les pièces à leur position initiale.
         }
-        
-        
+
+
 
         public bool ExecuterCoup(Coup coup)
         {
@@ -126,6 +126,10 @@ namespace Chess.Modèles
             throw new System.NotImplementedException();
             // TODO: Finaliser la partie en marquant EstTermine, sauvegarder les scores dans un fichier, etc.
         }
+
+        //-------------------------------------------------------------------------
+        // Overrides
+        //-------------------------------------------------------------------------
 
         public override string ToString()
         {

@@ -34,16 +34,15 @@ namespace Chess.Modèles.Pièces
             return Math.Abs(dx) == 1 && dy == direction;
         }
 
-        public bool EstEnPassantValide(Coup coup, Position enPassantPosition)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void SetPosition(Position nouvellePosition)
         {
             base.SetPosition(nouvellePosition);
             HasMoved = true;
         }
+
+        //-------------------------------------------------------------------------
+        // Overrides
+        //-------------------------------------------------------------------------
 
         public override string ToString()
         {

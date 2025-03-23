@@ -29,3 +29,7 @@ C:\Users\User\Documents\GitHub\Cegep-joliette-POO\Chess\obj\Debug\Chess.FenetreP
 C:\Users\User\Documents\GitHub\Cegep-joliette-POO\Chess\obj\Debug\Chess.SelectionnerJoueurGUI.resources
 C:\Users\User\Documents\GitHub\Cegep-joliette-POO\Chess\obj\Debug\Chess.StatistiqueGUI.resources
 C:\Users\User\Documents\GitHub\Cegep-joliette-POO\Chess\obj\Debug\Chess.PlateauGUI.resources
+D:\Source\Repos\Cegep-joliette-POO\Chess\obj\Debug\Chess.FenetrePrincipale.resources
+D:\Source\Repos\Cegep-joliette-POO\Chess\obj\Debug\Chess.PlateauGUI.resources
+D:\Source\Repos\Cegep-joliette-POO\Chess\obj\Debug\Chess.SelectionnerJoueurGUI.resources
+D:\Source\Repos\Cegep-joliette-POO\Chess\obj\Debug\Chess.StatistiqueGUI.resources

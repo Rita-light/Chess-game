@@ -27,6 +27,10 @@
             HasMoved = true;
         }
 
+        //-------------------------------------------------------------------------
+        // Overrides
+        //-------------------------------------------------------------------------
+
         public override string ToString()
         {
             string couleur = IsWhite ? "Blanche" : "Noire";

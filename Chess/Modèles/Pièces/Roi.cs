@@ -16,11 +16,11 @@ namespace Chess.Modèles.Pièces
             int dx = Math.Abs(coup.Destination.X - Position.X);
             int dy = Math.Abs(coup.Destination.Y - Position.Y);
 
-            // Déplacement normal : 1 case dans toutes les directions
+            // Mouvement normal du Roi : 1 case
             if (dx <= 1 && dy <= 1)
                 return true;
 
-            // Tentative de roque : déplacement horizontal de 2 cases
+            // Mouv. potentiel de roque : 2 cases sur la même rangée.
             if (dx == 2 && dy == 0)
                 return true;
 
@@ -31,85 +31,6 @@ namespace Chess.Modèles.Pièces
         {
             base.SetPosition(nouvellePosition);
             HasMoved = true;
-        }
-
-        //-------------------------------------------------------------------------
-        // Validation du roque
-        //-------------------------------------------------------------------------
-
-        /// <summary>
-        /// Valide le roque en s'assurant que le Roi n'a pas bougé, que le déplacement est de 2 cases sur la même rangée,
-        /// puis en déléguant à EstPetitRoque ou EstGrandRoque.
-        /// </summary>
-        public bool EstRoqueValide(Coup coup, Plateau plateau)
-        {
-            if (HasMoved)
-                return false;
-
-            int dx = coup.Destination.X - Position.X;
-            if (Math.Abs(dx) != 2 || coup.Destination.Y != Position.Y)
-                return false;
-
-            return dx > 0 ? EstPetitRoque(plateau) : EstGrandRoque(plateau);
-        }
-
-        /// <summary>
-        /// Vérifie les conditions pour le petit roque : la tour à l'extrémité droite doit être présente et immobile,
-        /// et les cases entre le Roi et la Tour doivent être libres.
-        /// </summary>
-        public bool EstPetitRoque(Plateau plateau)
-        {
-            Position tourPos = new Position(7, Position.Y);
-            Piece tourPiece = plateau.GetPiece(tourPos);
-            if (!PeutParticiperAuRoque(tourPiece))
-                return false;
-
-            Position case1 = new Position(Position.X + 1, Position.Y);
-            Position case2 = new Position(Position.X + 2, Position.Y);
-            if (plateau.GetPiece(case1) != null || plateau.GetPiece(case2) != null)
-                return false;
-
-            // TODO: Vérifier que le Roi et les cases traversées ne sont pas attaquées.
-            return true;
-        }
-
-        /// <summary>
-        /// Vérifie les conditions pour le grand roque : la tour à l'extrémité gauche doit être présente et immobile,
-        /// et les cases entre le Roi et la Tour doivent être libres.
-        /// </summary>
-        public bool EstGrandRoque(Plateau plateau)
-        {
-            Position tourPos = new Position(0, Position.Y);
-            Piece tourPiece = plateau.GetPiece(tourPos);
-            if (!PeutParticiperAuRoque(tourPiece))
-                return false;
-
-            Position case1 = new Position(Position.X - 1, Position.Y);
-            Position case2 = new Position(Position.X - 2, Position.Y);
-            Position case3 = new Position(Position.X - 3, Position.Y);
-            if (plateau.GetPiece(case1) != null || plateau.GetPiece(case2) != null || plateau.GetPiece(case3) != null)
-                return false;
-
-            // TODO: Vérifier que le Roi et les cases traversées ne sont pas attaquées.
-            return true;
-        }
-
-        //-------------------------------------------------------------------------
-        // Méthode utilitaire pour le roque
-        //-------------------------------------------------------------------------
-
-        /// <summary>
-        /// Vérifie si la pièce fournie (supposée être une tour) peut participer au roque.
-        /// </summary>
-        private bool PeutParticiperAuRoque(Piece tourPiece)
-        {
-            if (tourPiece == null || tourPiece.Type != TypePiece.Tour || tourPiece.IsWhite != IsWhite)
-                return false;
-
-            if (tourPiece is Tour tour && !tour.HasMoved)
-                return true;
-
-            return false;
         }
 
         //-------------------------------------------------------------------------
