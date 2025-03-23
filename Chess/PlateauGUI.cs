@@ -127,17 +127,16 @@ namespace Chess
                 
                 //Code pour jouer coup......
                 
-                Position depart = new Position(CaseSourceX, CaseSourceX);
+                Position depart = new Position(this.CaseSourceX, this.CaseSourceY);
                 Position destination = new Position(caseX, caseY);
                 
                 Boolean coupAppliquer = fenetrePrincipale.jouerCoup(depart, destination);
+                Console.WriteLine($@"{coupAppliquer}");
 
                 if (coupAppliquer)
-                {
-                    AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
-                    
-                    //changement de joueur, modification de message
-
+                {   
+                    pnlEchiquier.Refresh();
+                    MettreAJourPlateau();
                 }
                 else
                 {
@@ -147,7 +146,16 @@ namespace Chess
                 
                 this.CaseSourceX = this.CaseSourceY = -1;
             }
+            
+            
+            
         }
+        
+        public void MettreAJourPlateau()
+        {
+            AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
+        }
+
 
     }
 

@@ -50,10 +50,12 @@ namespace Chess.Modèles
 
         public bool ExecuterCoup(Coup coup)
         {
-            Boolean coupValide = Plateau.EstCoupValide(coup);
+            Boolean coupValide = true;
+            //coupValide = Plateau.EstCoupValide(coup);
             if (coupValide)
             {
                 Plateau.AppliquerCoup(coup);
+                HistoriqueCoup.Add(coup);
                 return true;
             }
 
