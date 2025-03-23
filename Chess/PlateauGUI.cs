@@ -126,8 +126,23 @@ namespace Chess
                 myGraph.DrawRectangle(new Pen(Color.Chocolate, 2), this.CaseSourceX * tailleX, this.CaseSourceY * tailleY, tailleX, tailleY);
                 
                 //Code pour jouer coup......
-                Console.WriteLine($@"source x: {CaseSourceX} and y: {CaseSourceY}");
-                Console.WriteLine($@"destination x: {caseX} and y: {caseY}");
+                
+                Position depart = new Position(CaseSourceX, CaseSourceX);
+                Position destination = new Position(caseX, caseY);
+                
+                Boolean coupAppliquer = fenetrePrincipale.jouerCoup(depart, destination);
+
+                if (coupAppliquer)
+                {
+                    AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
+                    
+                    //changement de joueur, modification de message
+
+                }
+                else
+                {
+                    Console.WriteLine("Erreur");
+                }
                 System.Threading.Thread.Sleep(1000);
                 
                 this.CaseSourceX = this.CaseSourceY = -1;

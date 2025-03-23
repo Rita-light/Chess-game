@@ -66,15 +66,17 @@ namespace Chess.Modèles
             Sauvegarder(fichierJoueurs, listJoueurs);
             Sauvegarder(fichierScores, listeScores);
         }
-
-        public void SauvegarderJoueurs()
-        {
-            Sauvegarder(fichierJoueurs, listJoueurs);
-        }
+        
         
         public void AjouterPartie(Partie partie)
         {
             listeParties.Add(partie);
+        }
+
+
+        public Boolean jouerCoup(Coup coup)
+        {
+            return partieActuelle.ExecuterCoup(coup);
         }
         
        

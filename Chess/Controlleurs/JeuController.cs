@@ -67,6 +67,13 @@ namespace Chess.Controlleurs
             return partieActuelle.Plateau;
         }
 
+        public Boolean jouerCoup(Position depart, Position destination)
+        {
+            Coup coup = new Coup(depart, destination);
+            
+            return gestionnaire.jouerCoup(coup);
+        }
+
 
 
     }

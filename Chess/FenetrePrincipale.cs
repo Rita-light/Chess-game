@@ -95,6 +95,11 @@ namespace Chess
             return controller.ObtenirPlateauActuel();
         }
 
+        public Boolean jouerCoup(Position depart, Position destination)
+        {
+           return controller.jouerCoup(depart, destination);
+        }
+
 
 
     }

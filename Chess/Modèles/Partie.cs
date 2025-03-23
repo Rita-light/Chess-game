@@ -50,7 +50,14 @@ namespace Chess.Modèles
 
         public bool ExecuterCoup(Coup coup)
         {
-            throw new System.NotImplementedException();
+            Boolean coupValide = Plateau.EstCoupValide(coup);
+            if (coupValide)
+            {
+                Plateau.AppliquerCoup(coup);
+                return true;
+            }
+
+            return false;
         }
 
         public void ChangerTour()
