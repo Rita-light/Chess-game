@@ -60,6 +60,12 @@ namespace Chess.Controlleurs
             }
             return gestionnaire.partieActuelle;
         }
+        
+        public Plateau ObtenirPlateauActuel()
+        {
+            var partieActuelle = ObtenirPartieActuelle();
+            return partieActuelle.Plateau;
+        }
 
 
 

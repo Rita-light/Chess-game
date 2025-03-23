@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.pnlEchequier = new System.Windows.Forms.Panel();
+            this.pnlEchiquier = new System.Windows.Forms.Panel();
             this.btnDemarrerPartie = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblPointBlanc = new System.Windows.Forms.Label();
@@ -55,25 +55,27 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Message aux joueurs";
             // 
-            // pnlEchequier
+            // pnlEchiquier
             // 
-            this.pnlEchequier.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.pnlEchequier.Location = new System.Drawing.Point(27, 53);
-            this.pnlEchequier.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pnlEchequier.Name = "pnlEchequier";
-            this.pnlEchequier.Size = new System.Drawing.Size(356, 320);
-            this.pnlEchequier.TabIndex = 1;
-            this.pnlEchequier.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlEchequier_Paint);
+            this.pnlEchiquier.BackColor = System.Drawing.Color.AliceBlue;
+            this.pnlEchiquier.Location = new System.Drawing.Point(27, 53);
+            this.pnlEchiquier.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pnlEchiquier.Name = "pnlEchiquier";
+            this.pnlEchiquier.Size = new System.Drawing.Size(400, 400);
+            this.pnlEchiquier.TabIndex = 1;
+            this.pnlEchiquier.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlEchequier_Paint);
+            this.pnlEchiquier.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pnlEchiquier_MouseClick);
             // 
             // btnDemarrerPartie
             // 
-            this.btnDemarrerPartie.Location = new System.Drawing.Point(27, 390);
+            this.btnDemarrerPartie.Location = new System.Drawing.Point(27, 466);
             this.btnDemarrerPartie.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDemarrerPartie.Name = "btnDemarrerPartie";
-            this.btnDemarrerPartie.Size = new System.Drawing.Size(356, 26);
+            this.btnDemarrerPartie.Size = new System.Drawing.Size(400, 26);
             this.btnDemarrerPartie.TabIndex = 2;
             this.btnDemarrerPartie.Text = "Jouer";
             this.btnDemarrerPartie.UseVisualStyleBackColor = true;
+            this.btnDemarrerPartie.Click += new System.EventHandler(this.btnDemarrerPartie_Click);
             // 
             // groupBox1
             // 
@@ -81,7 +83,7 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.lblNomBlanc);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(27, 438);
+            this.groupBox1.Location = new System.Drawing.Point(27, 505);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -131,7 +133,7 @@
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.lblJoueurNoir);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Location = new System.Drawing.Point(213, 438);
+            this.groupBox2.Location = new System.Drawing.Point(258, 505);
             this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -179,11 +181,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(418, 540);
+            this.ClientSize = new System.Drawing.Size(460, 607);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnDemarrerPartie);
-            this.Controls.Add(this.pnlEchequier);
+            this.Controls.Add(this.pnlEchiquier);
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "PlateauGUI";
@@ -200,7 +202,7 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel pnlEchequier;
+        private System.Windows.Forms.Panel pnlEchiquier;
         private System.Windows.Forms.Button btnDemarrerPartie;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lblPointBlanc;

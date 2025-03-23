@@ -89,6 +89,11 @@ namespace Chess
         {
             return controller.ObtenirPartieActuelle();
         }
+        
+        public Plateau ObtenirPlateauActuel()
+        {
+            return controller.ObtenirPlateauActuel();
+        }
 
 
 
