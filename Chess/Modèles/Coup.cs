@@ -19,6 +19,10 @@ namespace Chess.Modèles
 
         public Coup() : this(new Position(0, 0), new Position(0, 0)) { }
 
+        //-------------------------------------------------------------------------
+        // Overrides
+        //-------------------------------------------------------------------------
+
         public override string ToString()
         {
             return $"Coup de {Depart} vers {Destination}";

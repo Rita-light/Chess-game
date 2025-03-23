@@ -16,6 +16,10 @@ namespace Chess.Modèles.Pièces
             return ((dx == 0 && dy != 0) || (dy == 0 && dx != 0) || (dx == dy && dx != 0));
         }
 
+        //-------------------------------------------------------------------------
+        // Overrides
+        //-------------------------------------------------------------------------
+
         public override string ToString()
         {
             string couleur = IsWhite ? "Blanche" : "Noire";

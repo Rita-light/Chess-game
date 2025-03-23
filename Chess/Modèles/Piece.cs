@@ -28,6 +28,10 @@ namespace Chess.Modèles
 
         public abstract bool EstMouvementValide(Coup coup);
 
+        //-------------------------------------------------------------------------
+        // Overrides
+        //-------------------------------------------------------------------------
+
         public override string ToString()
         {
             string couleur = (Type == TypePiece.Reine || Type == TypePiece.Tour)

@@ -53,6 +53,7 @@
     <Compile Include="FenetrePrincipale.Designer.cs">
       <DependentUpon>FenetrePrincipale.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modèles\Arbitre.cs" />
     <Compile Include="Modèles\Coup.cs" />
     <Compile Include="Modèles\Gestionnaire.cs" />
     <Compile Include="Modèles\Joueur.cs" />

@@ -6,25 +6,25 @@ namespace Chess.Modèles
     {
         // Champ statique pour suivre le dernier ID généré
         private static int dernierID = 0;
-        
+
         private int joueurID;
         private string nom;
         private int victoire;
         private int defaite;
         private int partNulle;
         private int classement;
-        
+
 
         public Joueur(string nom)
         {
             if (string.IsNullOrWhiteSpace(nom))
                 throw new ArgumentException("Le nom du joueur ne peut pas être vide.");
-            this.joueurID = ++dernierID;
+            joueurID = ++dernierID;
             this.nom = nom;
-            this.victoire = 0;
-            this.defaite = 0;
-            this.partNulle = 0;
-            this.classement = 0;
+            victoire = 0;
+            defaite = 0;
+            partNulle = 0;
+            classement = 0;
         }
         public Joueur(int joueurId, string nom, int victoire, int defaite, int partNulle, int classement)
         {
@@ -45,40 +45,40 @@ namespace Chess.Modèles
 
         public string Nom
         {
-            get { return this.nom;}
-            set { this.nom = value; }
+            get { return nom; }
+            set { nom = value; }
         }
-        
+
         public int Victoire
         {
-            get { return this.victoire;}
-            set { this.victoire = value; }
+            get { return victoire; }
+            set { victoire = value; }
         }
 
         public int Defaite
         {
-            get { return this.defaite; }
-            set { this.defaite = value; }
+            get { return defaite; }
+            set { defaite = value; }
         }
 
         public int Classement
         {
-            get { return this.classement; }
-            set { this.classement = value; }
+            get { return classement; }
+            set { classement = value; }
         }
 
         public int PartNulle
         {
-            get { return this.partNulle; }
-            set { this.partNulle = value; }
+            get { return partNulle; }
+            set { partNulle = value; }
         }
 
         public int Parties
         {
-            get { return this.victoire + this.defaite; }
+            get { return victoire + defaite; }
         }
 
-        
+
         // Méthode ToString - Convertit l'objet en chaîne de caractères
         public override string ToString()
         {
@@ -90,7 +90,7 @@ namespace Chess.Modèles
             var parts = data.Split(';');
             return new Joueur
             (
-                int.Parse(parts[0]), 
+                int.Parse(parts[0]),
                 parts[1],
                 int.Parse(parts[2]),
                 int.Parse(parts[3]),
@@ -111,7 +111,7 @@ namespace Chess.Modèles
         {
             return Nom.GetHashCode();
         }
-        
-        
+
+
     }
 }

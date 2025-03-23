@@ -11,10 +11,12 @@ namespace Chess.Modèles
         /// Case intermédiaire permettant l'en passant (si un pion a avancé de 2 cases).
         /// </summary>
         public Position EnPassantPosition { get; private set; } = null;
+        private Arbitre Arbitre;
 
         public Plateau()
         {
             InitialiserPlateau();
+            Arbitre = new Arbitre(this);
         }
 
         /// <summary>
@@ -59,20 +61,7 @@ namespace Chess.Modèles
         /// </summary>
         public bool EstCoupValide(Coup coup)
         {
-            if (!ValiderCoupBasique(coup, out Piece pieceDepart, out Piece pieceDestination))
-                return false;
-
-            if (!pieceDepart.EstMouvementValide(coup))
-                return false;
-
-            if (!ValiderCheminOuRoque(coup, pieceDepart))
-                return false;
-
-            if (!ValiderCapturePion(coup, pieceDepart, pieceDestination))
-                return false;
-
-            // TODO: vérifications globales (échec, mat, etc.)
-            return true;
+            return Arbitre.EstCoupValide(coup);
         }
 
         //-------------------------------------------------------------------------
@@ -111,87 +100,7 @@ namespace Chess.Modèles
         }
 
         //-------------------------------------------------------------------------
-        // Méthodes de validation internes
-        //-------------------------------------------------------------------------
-
-        /// <summary>
-        /// Vérification initiale (positions valides, présence d'une pièce au départ,
-        /// pas de capture alliée).
-        /// </summary>
-        private bool ValiderCoupBasique(Coup coup, out Piece pieceDepart, out Piece pieceDestination)
-        {
-            pieceDepart = null;
-            pieceDestination = null;
-
-            if (coup == null)
-                return false;
-
-            if (!EstPositionValide(coup.Depart) || !EstPositionValide(coup.Destination))
-                return false;
-
-            pieceDepart = GetPiece(coup.Depart);
-            if (pieceDepart == null)
-                return false;
-
-            pieceDestination = GetPiece(coup.Destination);
-            if (pieceDestination != null && pieceDestination.IsWhite == pieceDepart.IsWhite)
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Vérifie si le chemin est libre pour les pièces concernées ou s'il s'agit d'un roque (roi).
-        /// </summary>
-        private bool ValiderCheminOuRoque(Coup coup, Piece pieceDepart)
-        {
-            if (pieceDepart.Type == TypePiece.Roi)
-            {
-                int dx = Math.Abs(coup.Destination.X - coup.Depart.X);
-                int dy = Math.Abs(coup.Destination.Y - coup.Depart.Y);
-
-                // Roque : 2 cases horizontalement
-                if (dx == 2 && dy == 0)
-                {
-                    Roi roi = (Roi)pieceDepart;
-                    if (!roi.EstRoqueValide(coup, this))
-                        return false;
-                } else
-                {
-                    if (!EstCheminLibre(coup))
-                        return false;
-                }
-            } else if (pieceDepart.Type != TypePiece.Cavalier)
-            {
-                // Tour, Fou, Reine, Pion => vérification du chemin
-                if (!EstCheminLibre(coup))
-                    return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Vérifie le cas particulier du pion qui capture diagonale : 
-        /// s'il n'y a pas de pièce, autoriser seulement si c'est en passant.
-        /// </summary>
-        private bool ValiderCapturePion(Coup coup, Piece pieceDepart, Piece pieceDestination)
-        {
-            if (pieceDepart.Type == TypePiece.Pion)
-            {
-                Pion pion = (Pion)pieceDepart;
-                if (pion.EstCoupDeCapture(coup) && pieceDestination == null)
-                {
-                    // S'il n'y a pas de pièce en destination, on ne l'accepte 
-                    // que si la case destination == EnPassantPosition.
-                    if (!coup.Destination.Equals(EnPassantPosition))
-                        return false;
-                }
-            }
-            return true;
-        }
-
-        //-------------------------------------------------------------------------
-        // Méthodes d'application internes
+        // Méthodes internes
         //-------------------------------------------------------------------------
 
         /// <summary>
@@ -211,7 +120,7 @@ namespace Chess.Modèles
         /// </summary>
         private void AppliquerRoque(Coup coup)
         {
-            // Petit roque => tour en (7, Y)
+            // Petit roque
             if (coup.Destination.X > coup.Depart.X)
             {
                 Position tourPosDepart = new Position(7, coup.Depart.Y);
@@ -224,7 +133,7 @@ namespace Chess.Modèles
                     SetPiece(tourPosDepart, null);
                 }
             }
-            // Grand roque => tour en (0, Y)
+            // Grand roque
             else
             {
                 Position tourPosDepart = new Position(0, coup.Depart.Y);
@@ -326,7 +235,7 @@ namespace Chess.Modèles
             echequier[position.X, position.Y] = piece;
         }
 
-        private bool EstPositionValide(Position position)
+        public bool EstPositionValide(Position position)
         {
             return position.X >= 0 && position.X < 8 && position.Y >= 0 && position.Y < 8;
         }
