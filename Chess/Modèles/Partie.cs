@@ -5,6 +5,7 @@ namespace Chess.Modèles
 {
     public class Partie
     {
+        private static int dernierID = 0;
         public int ID { get; private set; }
         public Plateau Plateau { get; private set; }
         public Joueur JoueurBlanc { get; private set; }
@@ -15,9 +16,9 @@ namespace Chess.Modèles
         public int PointBlanc { get; private set; }
         public int PointNoir { get; private set; }
 
-        public Partie(int id, Joueur joueurBlanc, Joueur joueurNoir)
+        public Partie( Joueur joueurBlanc, Joueur joueurNoir)
         {
-            ID = id;
+            ID = ++dernierID;
             if (joueurBlanc == null)
                 throw new ArgumentNullException(nameof(joueurBlanc));
             if (joueurNoir == null)

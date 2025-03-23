@@ -12,9 +12,13 @@ namespace Chess
 {
     public partial class PlateauGUI : Form
     {
-        public PlateauGUI()
+        private FenetrePrincipale fenetrePrincipale;
+        public PlateauGUI(FenetrePrincipale fenetrePrincipale)
         {
             InitializeComponent();
+            this.fenetrePrincipale = fenetrePrincipale;
+            
+
         }
         private void pnlEchequier_Paint(object sender, PaintEventArgs e)
         {
@@ -47,6 +51,13 @@ namespace Chess
                 myGraph.FillRectangle(myBrush, r * tileSize, c * tileSize, tileSize, tileSize);
         }*/
 
+        private void PlateauGUI_Load(object sender, EventArgs e)
+        {
+            var partieActuelle = fenetrePrincipale.ObtenirPartieActuelle();
+            
+            lblNomBlanc.Text = $"{partieActuelle.JoueurBlanc.Nom}";
+            lblJoueurNoir.Text = $"{partieActuelle.JoueurNoir.Nom}";
+        }
     }
 
 }

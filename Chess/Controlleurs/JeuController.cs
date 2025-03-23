@@ -41,5 +41,27 @@ namespace Chess.Controlleurs
             }
             gestionnaire.listJoueurs.Add(new Joueur(nom));
         }
+        
+        public void AjouterPartie(Partie partie)
+        {
+            gestionnaire.AjouterPartie(partie);
+        }
+        
+        public void DefinirPartieActuelle(Partie partie)
+        {
+            gestionnaire.partieActuelle = partie;
+        }
+        
+        public Partie ObtenirPartieActuelle()
+        {
+            if (gestionnaire.partieActuelle == null)
+            {
+                throw new InvalidOperationException("Aucune partie actuelle n'est définie.");
+            }
+            return gestionnaire.partieActuelle;
+        }
+
+
+
     }
 }

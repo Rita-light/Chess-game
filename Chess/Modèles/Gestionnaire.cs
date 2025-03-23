@@ -10,7 +10,7 @@ namespace Chess.Modèles
         public List<Joueur> listJoueurs { get; private set; } = new List<Joueur>();
         public List<Partie> listeParties { get; private set; } = new List<Partie>();
         public List<Score> listeScores { get; private set; } = new List<Score>();
-        public Partie partieActuel { get; set; }
+        public Partie partieActuelle { get; set; }
 
         private string fichierJoueurs = @"Joueurs.txt";
         private string fichierScores = @"Scores.txt";
@@ -71,6 +71,14 @@ namespace Chess.Modèles
         {
             Sauvegarder(fichierJoueurs, listJoueurs);
         }
+        
+        public void AjouterPartie(Partie partie)
+        {
+            listeParties.Add(partie);
+        }
+        
+       
+
         
     }
 

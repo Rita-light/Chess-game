@@ -24,7 +24,7 @@ namespace Chess
             this.controller = controller; // Enregistre le contrôleur
             this.statistiqueGUI = new StatistiqueGUI(this); // Crée l'instance de la fenêtre StatistiqueGUI
             this.selectionnerJoueurGUI = new SelectionnerJoueurGUI(this); // Initialise avec les joueurs
-            this.plateauGUI = new PlateauGUI(); 
+            this.plateauGUI = new PlateauGUI(this); 
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -46,5 +46,51 @@ namespace Chess
         {
             statistiqueGUI.ShowDialog();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            selectionnerJoueurGUI.ShowDialog();
+        }
+        
+        public void CreerNouvellePartie(List<Joueur> joueurs)
+        {
+            // Vérifier qu'il y a exactement deux joueurs
+            if (joueurs.Count != 2)
+            {
+                MessageBox.Show("Erreur : Vous devez fournir exactement deux joueurs pour créer une partie.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Créer une nouvelle partie
+            var nouvellePartie = new Partie(joueurs[0], joueurs[1]);
+
+            // Enregistrer la nouvelle partie dans le gestionnaire
+            AjouterNouvellePartie(nouvellePartie);
+
+            // Définir la partie actuelle
+            DefinirPartieActuelle(nouvellePartie);
+
+            // Ouvrir PlateauGUI
+            plateauGUI.Show();
+        }
+
+        
+        public void AjouterNouvellePartie(Partie partie)
+        {
+            controller.AjouterPartie(partie);
+        }
+        
+        public void DefinirPartieActuelle(Partie partie)
+        {
+            controller.DefinirPartieActuelle(partie);
+        }
+        
+        public Partie ObtenirPartieActuelle()
+        {
+            return controller.ObtenirPartieActuelle();
+        }
+
+
+
     }
 }
