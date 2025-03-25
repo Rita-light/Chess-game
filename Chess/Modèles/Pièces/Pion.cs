@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Chess.Modèles.Pièces
 {
@@ -34,6 +35,26 @@ namespace Chess.Modèles.Pièces
             return Math.Abs(dx) == 1 && dy == direction;
         }
 
+        public override HashSet<Position> ObtenirAttaquesPossibles(Plateau plateau)
+        {
+            HashSet<Position> attaques = new HashSet<Position>();
+            int direction = IsWhite ? -1 : 1;
+
+            int newX1 = Position.X - 1;
+            int newY1 = Position.Y + direction;
+            int newX2 = Position.X + 1;
+            int newY2 = Position.Y + direction;
+
+            if (newX1 >= 0 && newX1 < 8 && newY1 >= 0 && newY1 < 8)
+                attaques.Add(new Position(newX1, newY1));
+            if (newX2 >= 0 && newX2 < 8 && newY2 >= 0 && newY2 < 8)
+                attaques.Add(new Position(newX2, newY2));
+
+            return attaques;
+        }
+
+
+
         public override void SetPosition(Position nouvellePosition)
         {
             base.SetPosition(nouvellePosition);
@@ -46,7 +67,7 @@ namespace Chess.Modèles.Pièces
 
         public override string ToString()
         {
-            return this.IsWhite == false ? "p" : "P";
+            return IsWhite == false ? "p" : "P";
         }
     }
 }

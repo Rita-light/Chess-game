@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Chess.Modèles
 {
@@ -27,6 +28,7 @@ namespace Chess.Modèles
         }
 
         public abstract bool EstMouvementValide(Coup coup);
+        public abstract HashSet<Position> ObtenirAttaquesPossibles(Plateau plateau);
 
         //-------------------------------------------------------------------------
         // Overrides

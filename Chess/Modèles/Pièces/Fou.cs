@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Chess.Modèles.Pièces
 {
@@ -16,13 +17,38 @@ namespace Chess.Modèles.Pièces
             return (dx == dy && dx != 0);
         }
 
+        public override HashSet<Position> ObtenirAttaquesPossibles(Plateau plateau)
+        {
+            HashSet<Position> attaques = new HashSet<Position>();
+            int[] directionsX = { 1, 1, -1, -1 };
+            int[] directionsY = { 1, -1, 1, -1 };
+
+            for (int d = 0; d < 4; d++)
+            {
+                int currentX = Position.X;
+                int currentY = Position.Y;
+                while (true)
+                {
+                    currentX += directionsX[d];
+                    currentY += directionsY[d];
+                    if (currentX < 0 || currentX >= 8 || currentY < 0 || currentY >= 8)
+                        break;
+                    attaques.Add(new Position(currentX, currentY));
+                    if (plateau.GetPiece(new Position(currentX, currentY)) != null)
+                        break;
+                }
+            }
+            return attaques;
+        }
+
+
         //-------------------------------------------------------------------------
         // Overrides
         //-------------------------------------------------------------------------
 
         public override string ToString()
         {
-            return this.IsWhite == false ? "f" : "F";
+            return IsWhite == false ? "f" : "F";
         }
 
         public override bool Equals(object obj)

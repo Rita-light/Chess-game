@@ -1,4 +1,6 @@
-﻿namespace Chess.Modèles.Pièces
+﻿using System.Collections.Generic;
+
+namespace Chess.Modèles.Pièces
 {
     public class Tour : Piece
     {
@@ -27,13 +29,38 @@
             HasMoved = true;
         }
 
+        public override HashSet<Position> ObtenirAttaquesPossibles(Plateau plateau)
+        {
+            HashSet<Position> attaques = new HashSet<Position>();
+            int[] directionsX = { 1, -1, 0, 0 };
+            int[] directionsY = { 0, 0, 1, -1 };
+
+            for (int d = 0; d < 4; d++)
+            {
+                int currentX = Position.X;
+                int currentY = Position.Y;
+                while (true)
+                {
+                    currentX += directionsX[d];
+                    currentY += directionsY[d];
+                    if (currentX < 0 || currentX >= 8 || currentY < 0 || currentY >= 8)
+                        break;
+                    attaques.Add(new Position(currentX, currentY));
+                    if (plateau.GetPiece(new Position(currentX, currentY)) != null)
+                        break;
+                }
+            }
+            return attaques;
+        }
+
+
         //-------------------------------------------------------------------------
         // Overrides
         //-------------------------------------------------------------------------
 
         public override string ToString()
         {
-            return this.IsWhite == false ? "t" : "T";
+            return IsWhite == false ? "t" : "T";
         }
 
         public override bool Equals(object obj)

@@ -50,13 +50,13 @@ namespace Chess.Modèles
             for (int x = 0; x < 8; x++)
                 SetPiece(new Position(x, 6), new Pion(true, new Position(x, 6)));
         }
-        
+
         public override string ToString()
         {
             string plateauChaine = "";
             for (int r = 0; r < 8; r++)
-            for (int c = 0; c < 8; c++)
-                plateauChaine += this.echequier[r, c] != null ? this.echequier[r, c].ToString() : "-";
+                for (int c = 0; c < 8; c++)
+                    plateauChaine += echequier[r, c] != null ? echequier[r, c].ToString() : "-";
             return plateauChaine;
         }
 
@@ -72,7 +72,7 @@ namespace Chess.Modèles
         {
             return Arbitre.EstCoupValide(coup);
         }
-        
+
         /// <summary>
         /// Verifie la couleur de la pièce à bouger
         /// </summary>
@@ -205,7 +205,7 @@ namespace Chess.Modèles
         }
 
         /// <summary>
-        /// Réinitialise la case en passant (fin de validité).
+        /// Réinitialise la case en passant.
         /// </summary>
         private void ReinitialiserEnPassant()
         {

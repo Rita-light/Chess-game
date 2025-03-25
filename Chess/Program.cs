@@ -1,6 +1,5 @@
-﻿using Chess.Modèles;
+﻿using Chess.Controlleurs;
 using System;
-using Chess.Controlleurs;
 
 namespace Chess
 {
@@ -15,9 +14,6 @@ namespace Chess
             // Instanciation du contrôleur et démarrage de l'application
             var jeuController = new JeuController();
             jeuController.DemarrerApplication();
-
         }
-
-        
     }
 }
