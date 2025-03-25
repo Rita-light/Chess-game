@@ -50,6 +50,15 @@ namespace Chess.Modèles
             for (int x = 0; x < 8; x++)
                 SetPiece(new Position(x, 6), new Pion(true, new Position(x, 6)));
         }
+        
+        public override string ToString()
+        {
+            string plateauChaine = "";
+            for (int r = 0; r < 8; r++)
+            for (int c = 0; c < 8; c++)
+                plateauChaine += this.echequier[r, c] != null ? this.echequier[r, c].ToString() : "-";
+            return plateauChaine;
+        }
 
         //-------------------------------------------------------------------------
         // Validation principale du coup

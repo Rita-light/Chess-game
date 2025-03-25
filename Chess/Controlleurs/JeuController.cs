@@ -41,40 +41,34 @@ namespace Chess.Controlleurs
             }
             gestionnaire.listJoueurs.Add(new Joueur(nom));
         }
-        
-        public void AjouterPartie(Partie partie)
+
+        public int CreerNouvellePartie(List<Joueur> joueurs)
         {
-            gestionnaire.AjouterPartie(partie);
-        }
-        
-        public void DefinirPartieActuelle(Partie partie)
-        {
-            gestionnaire.partieActuelle = partie;
-        }
-        
-        public Partie ObtenirPartieActuelle()
-        {
-            if (gestionnaire.partieActuelle == null)
-            {
-                throw new InvalidOperationException("Aucune partie actuelle n'est définie.");
-            }
-            return gestionnaire.partieActuelle;
-        }
-        
-        public Plateau ObtenirPlateauActuel()
-        {
-            var partieActuelle = ObtenirPartieActuelle();
-            return partieActuelle.Plateau;
+            int partieID = gestionnaire.CreerNouvellePartie(joueurs);
+            return partieID;
         }
 
-        public Boolean jouerCoup(Position depart, Position destination)
+        public (String, String) ObtenirNomJoueur()
         {
-            Coup coup = new Coup(depart, destination);
+            return gestionnaire.ObtenirNomJoueur();
+        }
+        
+        
+        public String ObtenirPlateauActuel()
+        {
             
-            return gestionnaire.jouerCoup(coup);
+            return gestionnaire.ObtenirPlateauActuel();
         }
 
-
-
+        public Boolean jouerCoup(int departX, int departY, int destinationX, int destinationY, int partieID)
+        {
+            
+            return gestionnaire.jouerCoup( departX, departY,  destinationX, destinationY, partieID);
+        }
+        
+        public void CreerNouveauJoueur(String nomJoueur)
+        {
+            gestionnaire.CreerNouveauJoueur(nomJoueur);
+        }
     }
 }

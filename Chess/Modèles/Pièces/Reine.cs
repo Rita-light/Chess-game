@@ -22,8 +22,7 @@ namespace Chess.Modèles.Pièces
 
         public override string ToString()
         {
-            string couleur = IsWhite ? "Blanche" : "Noire";
-            return $"Reine {couleur} en {Position}";
+            return this.IsWhite == false ? "q" : "Q";
         }
 
         public override bool Equals(object obj)

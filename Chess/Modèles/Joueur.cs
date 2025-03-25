@@ -5,7 +5,7 @@ namespace Chess.Modèles
     public class Joueur
     {
         // Champ statique pour suivre le dernier ID généré
-        private static int dernierID = 0;
+        public static int dernierID = 0;
 
         private int joueurID;
         private string nom;

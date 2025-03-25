@@ -33,8 +33,7 @@
 
         public override string ToString()
         {
-            string couleur = IsWhite ? "Blanche" : "Noire";
-            return $"Tour {couleur} en {Position}";
+            return this.IsWhite == false ? "t" : "T";
         }
 
         public override bool Equals(object obj)

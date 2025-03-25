@@ -38,7 +38,8 @@ namespace Chess
 
         private void NouveauJoueur_Click(object sender, EventArgs e)
         {
-            throw new System.NotImplementedException();
+            fenetrePrincipale.CreerNouveauJoueur(newJoueur.Text);
+            AfficherJoueursDansListView(fenetrePrincipale.ObtenirListeJoueurs());
         }
         
         private void label2_Click(object sender, EventArgs e)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Chess.Modèles
 {
@@ -18,8 +19,21 @@ namespace Chess.Modèles
         public Gestionnaire()
         {
            ChargerTout();
+           InitialiserDernierID();
         }
-
+        
+        private void InitialiserDernierID()
+        {
+            if (listJoueurs.Any())
+            {
+                Joueur.dernierID = listJoueurs.Max(j => j.JoueurID);
+            }
+            else
+            {
+                Joueur.dernierID = 0; 
+            }
+        }
+        
         // methode pour chatger le fichier
         private void Charger<T>(string fichier, List<T> liste, Func<string, T> fromString)
         {
@@ -66,21 +80,52 @@ namespace Chess.Modèles
             Sauvegarder(fichierJoueurs, listJoueurs);
             Sauvegarder(fichierScores, listeScores);
         }
-        
-        
-        public void AjouterPartie(Partie partie)
+
+        public int CreerNouvellePartie(List<Joueur> joueurs)
         {
-            listeParties.Add(partie);
+            var nouvellePartie = new Partie(joueurs[0], joueurs[1]);
+            listeParties.Add(nouvellePartie);
+            partieActuelle = nouvellePartie;
+
+            return partieActuelle.ID;
         }
 
-
-        public Boolean jouerCoup(Coup coup)
+        public (String, String) ObtenirNomJoueur()
         {
+            return (partieActuelle.JoueurBlanc.Nom, partieActuelle.JoueurNoir.Nom);
+        }
+        
+        public String ObtenirPlateauActuel()
+        {
+            return partieActuelle.Plateau.ToString();
+        }
+        
+        public Partie ObtenirPartieParId(int idPartie)
+        {
+            foreach (var partie in listeParties)
+            {
+                if (partie.ID == idPartie)
+                {
+                    return partie; // Renvoie la partie correspondant à l'ID
+                }
+            }
+            return null; // Si aucune partie n'est trouvée
+        }
+        
+        public Boolean jouerCoup(int departX, int departY, int destinationX, int destinationY, int partieID)
+        {
+            Position depart = new Position(departX, departY);
+            Position destination = new Position(destinationX, destinationY);
+            Coup coup = new Coup(depart, destination);
+            partieActuelle = ObtenirPartieParId(partieID);
             return partieActuelle.ExecuterCoup(coup);
         }
         
-       
-
+        public void CreerNouveauJoueur(String nomJoueur)
+        {
+            Joueur joueur = new Joueur(nomJoueur);
+            listJoueurs.Add(joueur);
+        }
         
     }
 

@@ -24,7 +24,6 @@ namespace Chess
             this.controller = controller; // Enregistre le contrôleur
             this.statistiqueGUI = new StatistiqueGUI(this); // Crée l'instance de la fenêtre StatistiqueGUI
             this.selectionnerJoueurGUI = new SelectionnerJoueurGUI(this); // Initialise avec les joueurs
-            this.plateauGUI = new PlateauGUI(this); 
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -54,53 +53,38 @@ namespace Chess
         
         public void CreerNouvellePartie(List<Joueur> joueurs)
         {
-            // Vérifier qu'il y a exactement deux joueurs
+           // Vérifier qu'il y a exactement deux joueurs
             if (joueurs.Count != 2)
             {
                 MessageBox.Show("Erreur : Vous devez fournir exactement deux joueurs pour créer une partie.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
             // Créer une nouvelle partie
-            var nouvellePartie = new Partie(joueurs[0], joueurs[1]);
-
-            // Enregistrer la nouvelle partie dans le gestionnaire
-            AjouterNouvellePartie(nouvellePartie);
-
-            // Définir la partie actuelle
-            DefinirPartieActuelle(nouvellePartie);
-
-            // Ouvrir PlateauGUI
-            plateauGUI.Show();
+            int partieID = controller.CreerNouvellePartie(joueurs);
+            
+            // Ouvrir PlateauGUI pour cette partie
+            new PlateauGUI(this, partieID).Show();
+            
         }
 
-        
-        public void AjouterNouvellePartie(Partie partie)
+        public (String, String) ObtenirNomJoueur()
         {
-            controller.AjouterPartie(partie);
+            return controller.ObtenirNomJoueur();
         }
         
-        public void DefinirPartieActuelle(Partie partie)
-        {
-            controller.DefinirPartieActuelle(partie);
-        }
-        
-        public Partie ObtenirPartieActuelle()
-        {
-            return controller.ObtenirPartieActuelle();
-        }
-        
-        public Plateau ObtenirPlateauActuel()
+        public String ObtenirPlateauActuel()
         {
             return controller.ObtenirPlateauActuel();
         }
 
-        public Boolean jouerCoup(Position depart, Position destination)
+        public Boolean jouerCoup(int departX, int departY, int destinationX, int destinationY, int partieID)
         {
-           return controller.jouerCoup(depart, destination);
+           return controller.jouerCoup( departX,  departY,  destinationX,  destinationY, partieID);
         }
 
-
-
+        public void CreerNouveauJoueur(String nomJoueur)
+        {
+            controller.CreerNouveauJoueur(nomJoueur);
+        }
     }
 }

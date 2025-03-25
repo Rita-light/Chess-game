@@ -37,7 +37,7 @@ namespace Chess
             this.NouveauJoueur = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.Fermer = new System.Windows.Forms.Button();
-            this.txtJoueurBlanc = new System.Windows.Forms.TextBox();
+            this.newJoueur = new System.Windows.Forms.TextBox();
             this.btnNouvellePart = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -102,12 +102,12 @@ namespace Chess
             this.Fermer.Text = "Fermer";
             this.Fermer.UseVisualStyleBackColor = true;
             // 
-            // txtJoueurBlanc
+            // newJoueur
             // 
-            this.txtJoueurBlanc.Location = new System.Drawing.Point(437, 137);
-            this.txtJoueurBlanc.Name = "txtJoueurBlanc";
-            this.txtJoueurBlanc.Size = new System.Drawing.Size(183, 22);
-            this.txtJoueurBlanc.TabIndex = 10;
+            this.newJoueur.Location = new System.Drawing.Point(437, 137);
+            this.newJoueur.Name = "newJoueur";
+            this.newJoueur.Size = new System.Drawing.Size(183, 22);
+            this.newJoueur.TabIndex = 10;
             // 
             // btnNouvellePart
             // 
@@ -124,7 +124,7 @@ namespace Chess
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(653, 515);
             this.Controls.Add(this.btnNouvellePart);
-            this.Controls.Add(this.txtJoueurBlanc);
+            this.Controls.Add(this.newJoueur);
             this.Controls.Add(this.Fermer);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.NouveauJoueur);
@@ -145,7 +145,7 @@ namespace Chess
         private System.Windows.Forms.Button NouveauJoueur;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button Fermer;
-        private System.Windows.Forms.TextBox txtJoueurBlanc;
+        private System.Windows.Forms.TextBox newJoueur;
 
         #endregion
 
