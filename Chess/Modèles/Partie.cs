@@ -46,20 +46,17 @@ namespace Chess.Modèles
             // TODO: Mettre en place le plateau avec toutes les pièces à leur position initiale.
         }
 
-
-
         public bool ExecuterCoup(Coup coup)
         {
             Boolean coupValide ;
             if (EstpieceJoueurActuel(coup))
             {
-                coupValide = Plateau.EstCoupValide(coup); 
-            }
-            else
+                coupValide = Plateau.EstCoupValide(coup);
+            } else
             {
                 coupValide = false;
             }
-            
+
             if (coupValide)
             {
                 Plateau.AppliquerCoup(coup);
@@ -70,7 +67,7 @@ namespace Chess.Modèles
 
             return false;
         }
-        
+
         public bool EstpieceJoueurActuel(Coup coup)
         {
             // Le plateau détermine la couleur de la pièce à la position donnée
@@ -84,7 +81,7 @@ namespace Chess.Modèles
             }
 
             // Vérification selon le joueur actuel
-           if ((JoueurActuel.Equals(JoueurBlanc) && pieceBlanche != true) || (JoueurActuel.Equals(JoueurNoir) && pieceBlanche != false))
+            if ((JoueurActuel.Equals(JoueurBlanc) && pieceBlanche != true) || (JoueurActuel.Equals(JoueurNoir) && pieceBlanche != false))
             {
                 Console.WriteLine("Erreur : La pièce ne correspond pas au joueur actuel.");
                 return false;
@@ -92,18 +89,17 @@ namespace Chess.Modèles
 
             return true; // Coup valide
         }
-    
+
 
 
         public void ChangerTour()
         {
             // Alterner JoueurActuel entre JoueurBlanc et JoueurNoir.
-            
+
             if (JoueurActuel.Equals(JoueurBlanc))
             {
                 JoueurActuel = JoueurNoir;
-            }
-            else
+            } else
             {
                 JoueurActuel = JoueurBlanc;
             }

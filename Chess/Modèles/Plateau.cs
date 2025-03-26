@@ -1,5 +1,6 @@
 ﻿using Chess.Modèles.Pièces;
 using System;
+using System.Collections.Generic;
 
 namespace Chess.Modèles
 {
@@ -124,6 +125,64 @@ namespace Chess.Modèles
 
             // TODO: promotion, etc.
         }
+
+        //-------------------------------------------------------------------------
+        // Détection de l'échec
+        //-------------------------------------------------------------------------
+
+        public HashSet<Position> ObtenirAttaques(bool attaquesBlanches)
+        {
+            HashSet<Position> casesAttaquees = new HashSet<Position>();
+            for (int x = 0; x < 8; x++)
+            {
+                for (int y = 0; y < 8; y++)
+                {
+                    Position pos = new Position(x, y);
+                    Piece piece = GetPiece(pos);
+                    if (piece != null && piece.IsWhite == attaquesBlanches)
+                    {
+                        // Récupérer les cases attaquées par cette pièce
+                        HashSet<Position> attaques = piece.ObtenirAttaquesPossibles(this);
+                        foreach (var posAttaque in attaques)
+                        {
+                            casesAttaquees.Add(posAttaque);
+                        }
+                    }
+                }
+            }
+            return casesAttaquees;
+        }
+
+        public bool EstEnEchec(bool estBlanc)
+        {
+            // Trouver la position du roi de la couleur indiquée
+            Position positionRoi = null;
+            for (int x = 0; x < 8; x++)
+            {
+                for (int y = 0; y < 8; y++)
+                {
+                    Position pos = new Position(x, y);
+                    Piece piece = GetPiece(pos);
+                    if (piece != null && piece.Type == TypePiece.Roi && piece.IsWhite == estBlanc)
+                    {
+                        positionRoi = pos;
+                        break;
+                    }
+                }
+                if (positionRoi != null)
+                    break;
+            }
+
+            if (positionRoi == null)
+                throw new Exception("Roi non trouvé !");
+
+            // Obtenir les cases attaquées par l'adversaire
+            HashSet<Position> casesAttaqueesAdverses = ObtenirAttaques(!estBlanc);
+
+            // Le roi est en échec si sa position se trouve parmi les cases attaquées
+            return casesAttaqueesAdverses.Contains(positionRoi);
+        }
+
 
         //-------------------------------------------------------------------------
         // Méthodes internes

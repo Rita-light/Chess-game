@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Chess.Modèles
 {
-    
+
     public class Gestionnaire
     {
         public List<Joueur> listJoueurs { get; private set; } = new List<Joueur>();
@@ -18,22 +18,21 @@ namespace Chess.Modèles
 
         public Gestionnaire()
         {
-           ChargerTout();
-           InitialiserDernierID();
+            ChargerTout();
+            InitialiserDernierID();
         }
-        
+
         private void InitialiserDernierID()
         {
             if (listJoueurs.Any())
             {
                 Joueur.dernierID = listJoueurs.Max(j => j.JoueurID);
-            }
-            else
+            } else
             {
-                Joueur.dernierID = 0; 
+                Joueur.dernierID = 0;
             }
         }
-        
+
         // methode pour chatger le fichier
         private void Charger<T>(string fichier, List<T> liste, Func<string, T> fromString)
         {
@@ -52,7 +51,7 @@ namespace Chess.Modèles
                     throw;
                 }
             }
-            
+
         }
 
         // sauvegarde
@@ -94,12 +93,12 @@ namespace Chess.Modèles
         {
             return (partieActuelle.JoueurBlanc.Nom, partieActuelle.JoueurNoir.Nom);
         }
-        
+
         public String ObtenirPlateauActuel()
         {
             return partieActuelle.Plateau.ToString();
         }
-        
+
         public Partie ObtenirPartieParId(int idPartie)
         {
             foreach (var partie in listeParties)
@@ -111,7 +110,7 @@ namespace Chess.Modèles
             }
             return null; // Si aucune partie n'est trouvée
         }
-        
+
         public Boolean jouerCoup(int departX, int departY, int destinationX, int destinationY, int partieID)
         {
             Position depart = new Position(departX, departY);
@@ -120,13 +119,13 @@ namespace Chess.Modèles
             partieActuelle = ObtenirPartieParId(partieID);
             return partieActuelle.ExecuterCoup(coup);
         }
-        
+
         public void CreerNouveauJoueur(String nomJoueur)
         {
             Joueur joueur = new Joueur(nomJoueur);
             listJoueurs.Add(joueur);
         }
-        
+
     }
 
 }

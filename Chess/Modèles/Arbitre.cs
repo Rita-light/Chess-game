@@ -1,5 +1,6 @@
 ﻿using Chess.Modèles.Pièces;
 using System;
+using System.Collections.Generic;
 
 namespace Chess.Modèles
 {
@@ -62,12 +63,36 @@ namespace Chess.Modèles
             if (!ValiderCapturePion(coup, pieceDepart, pieceDestination))
                 return false;
 
+            if (SimulerCoupEtVerifierEchec(coup, pieceDepart, pieceDestination))
+                return false;
+
             return true;
         }
 
         //-------------------------------------------------------------------------
         // Méthodes internes
         //-------------------------------------------------------------------------
+
+        private bool SimulerCoupEtVerifierEchec(Coup coup, Piece pieceDepart, Piece pieceDestination)
+        {
+            // Sauvegarde de la position initiale
+            Position positionInitiale = pieceDepart.Position;
+
+            // Simulation du coup
+            Plateau.SetPiece(coup.Depart, null);
+            Plateau.SetPiece(coup.Destination, pieceDepart);
+            pieceDepart.SetPosition(coup.Destination);
+
+            // Vérifier l'échec pour le roi de la même couleur que la pièce déplacée
+            bool enEchec = Plateau.EstEnEchec(pieceDepart.IsWhite);
+
+            // Rollback de la simulation
+            Plateau.SetPiece(coup.Depart, pieceDepart);
+            Plateau.SetPiece(coup.Destination, pieceDestination);
+            pieceDepart.SetPosition(positionInitiale);
+
+            return enEchec;
+        }
 
         private bool ValiderCoupBasique(Coup coup, out Piece pieceDepart, out Piece pieceDestination)
         {
@@ -126,15 +151,42 @@ namespace Chess.Modèles
 
         private bool EstPetitRoqueValide(Coup coup, Roi roi)
         {
-            Position tourPos = new Position(7, roi.Position.Y);
-            Piece tourPiece = Plateau.GetPiece(tourPos);
-
-            if (!PeutParticiperAuRoque(tourPiece, roi.IsWhite))
+            // 1. Vérifier que le roi n'a pas bougé
+            if (roi.HasMoved)
                 return false;
 
-            Position case1 = new Position(roi.Position.X + 1, roi.Position.Y);
-            Position case2 = new Position(roi.Position.X + 2, roi.Position.Y);
-            if (Plateau.GetPiece(case1) != null || Plateau.GetPiece(case2) != null)
+            // 2. Vérifier que le roi n'est pas déjà en échec
+            if (Plateau.EstEnEchec(roi.IsWhite))
+                return false;
+
+            // 3. Vérifier la tour située sur le côté droit (position (7, roi.Position.Y))
+            Position tourPos = new Position(7, roi.Position.Y);
+            Piece tour = Plateau.GetPiece(tourPos);
+            if (!PeutParticiperAuRoque(tour, roi.IsWhite))
+                return false;
+
+            // 4. Vérifier que les cases intermédiaires sont libres :
+            //    Pour un petit roque, ce sont (roi.Position.X + 1, roi.Position.Y) et (roi.Position.X + 2, roi.Position.Y)
+            Position posInter1 = new Position(roi.Position.X + 1, roi.Position.Y);
+            Position posInter2 = new Position(roi.Position.X + 2, roi.Position.Y);
+            if (Plateau.GetPiece(posInter1) != null || Plateau.GetPiece(posInter2) != null)
+                return false;
+
+            // 5. Récupérer les cases attaquées par l'adversaire
+            HashSet<Position> attaquesAdverses = Plateau.ObtenirAttaques(!roi.IsWhite);
+
+            // 6. Vérifier que le roi ne se trouve pas en échec sur sa position actuelle,
+            //    sur la case intermédiaire et sur la case d'arrivée
+            if (attaquesAdverses.Contains(roi.Position) ||
+                attaquesAdverses.Contains(posInter1) ||
+                attaquesAdverses.Contains(posInter2))
+            {
+                return false;
+            }
+
+            // 7. Vérifier que le déplacement du roi correspond bien à un petit roque (2 cases à droite)
+            int dx = coup.Destination.X - roi.Position.X;
+            if (dx != 2)
                 return false;
 
             return true;
@@ -142,22 +194,47 @@ namespace Chess.Modèles
 
         private bool EstGrandRoqueValide(Coup coup, Roi roi)
         {
-            Position tourPos = new Position(0, roi.Position.Y);
-            Piece tourPiece = Plateau.GetPiece(tourPos);
-
-            if (!PeutParticiperAuRoque(tourPiece, roi.IsWhite))
+            // 1. Vérifier que le roi n'a pas bougé
+            if (roi.HasMoved)
                 return false;
 
-            Position case1 = new Position(roi.Position.X - 1, roi.Position.Y);
-            Position case2 = new Position(roi.Position.X - 2, roi.Position.Y);
-            Position case3 = new Position(roi.Position.X - 3, roi.Position.Y);
+            // 2. Vérifier que le roi n'est pas déjà en échec
+            if (Plateau.EstEnEchec(roi.IsWhite))
+                return false;
 
-            if (Plateau.GetPiece(case1) != null
-                || Plateau.GetPiece(case2) != null
-                || Plateau.GetPiece(case3) != null)
+            // 3. Vérifier la tour située sur le côté gauche (position (0, roi.Position.Y))
+            Position tourPos = new Position(0, roi.Position.Y);
+            Piece tour = Plateau.GetPiece(tourPos);
+            if (!PeutParticiperAuRoque(tour, roi.IsWhite))
+                return false;
+
+            // 4. Vérifier que les cases intermédiaires sont libres :
+            //    Pour un grand roque, ce sont (roi.Position.X - 1, roi.Position.Y),
+            //    (roi.Position.X - 2, roi.Position.Y) et (roi.Position.X - 3, roi.Position.Y)
+            Position posInter1 = new Position(roi.Position.X - 1, roi.Position.Y);
+            Position posInter2 = new Position(roi.Position.X - 2, roi.Position.Y);
+            Position posInter3 = new Position(roi.Position.X - 3, roi.Position.Y);
+            if (Plateau.GetPiece(posInter1) != null ||
+                Plateau.GetPiece(posInter2) != null ||
+                Plateau.GetPiece(posInter3) != null)
+                return false;
+
+            // 5. Récupérer les cases attaquées par l'adversaire
+            HashSet<Position> attaquesAdverses = Plateau.ObtenirAttaques(!roi.IsWhite);
+
+            // 6. Vérifier que le roi ne se trouve pas en échec sur sa position actuelle,
+            //    sur la case intermédiaire et sur la case d'arrivée
+            if (attaquesAdverses.Contains(roi.Position) ||
+                attaquesAdverses.Contains(posInter1) ||
+                attaquesAdverses.Contains(posInter2))
             {
                 return false;
             }
+
+            // 7. Vérifier que le déplacement du roi correspond bien à un grand roque (2 cases à gauche)
+            int dx = coup.Destination.X - roi.Position.X;
+            if (dx != -2)
+                return false;
 
             return true;
         }
