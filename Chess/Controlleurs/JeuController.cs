@@ -24,14 +24,14 @@ namespace Chess.Controlleurs
         }
         
         // Méthodes de communication ou de gestion (ajoutées selon besoin)
-        public List<Joueur> ObtenirListeJoueurs()
+        public List<String> ObtenirListeJoueurs()
         {
-            return gestionnaire.listJoueurs;
+            return gestionnaire.ObtenirJoueurFormatString();
         }
 
-        public List<Score> ObtenirListeScore()
+        public List<String> ObtenirListeScore()
         {
-            return gestionnaire.listeScores;
+            return gestionnaire.ObtenirScoresFormatString();
         }
 
         public void AjouterJoueur(string nom)
@@ -42,7 +42,7 @@ namespace Chess.Controlleurs
             gestionnaire.listJoueurs.Add(new Joueur(nom));
         }
 
-        public int CreerNouvellePartie(List<Joueur> joueurs)
+        public int CreerNouvellePartie(List<String> joueurs)
         {
             int partieID = gestionnaire.CreerNouvellePartie(joueurs);
             return partieID;

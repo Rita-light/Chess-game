@@ -44,7 +44,7 @@ namespace Chess
             // ID
             // 
             this.ID.Text = "Joueur ID";
-            this.ID.Width = 200;
+            this.ID.Width = 100;
             // 
             // Nom
             // 

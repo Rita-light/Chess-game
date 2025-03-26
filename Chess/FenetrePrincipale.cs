@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Chess.Controlleurs;
-using Chess.Modèles;
-
 
 namespace Chess
 {
@@ -31,12 +29,12 @@ namespace Chess
             selectionnerJoueurGUI.ShowDialog();
         }
         
-        public List<Joueur> ObtenirListeJoueurs()
+        public List<String> ObtenirListeJoueurs()
         {
             return controller.ObtenirListeJoueurs();
         }
 
-        public List<Score> ObtenirListeScores()
+        public List<String> ObtenirListeScores()
         {
             return controller.ObtenirListeScore();
         }
@@ -51,7 +49,7 @@ namespace Chess
             selectionnerJoueurGUI.ShowDialog();
         }
         
-        public void CreerNouvellePartie(List<Joueur> joueurs)
+        public void CreerNouvellePartie(List<String> joueurs)
         {
            // Vérifier qu'il y a exactement deux joueurs
             if (joueurs.Count != 2)
@@ -64,7 +62,6 @@ namespace Chess
             
             // Ouvrir PlateauGUI pour cette partie
             new PlateauGUI(this, partieID).Show();
-            
         }
 
         public (String, String) ObtenirNomJoueur()

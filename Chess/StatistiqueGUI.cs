@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Chess.Modèles;
 
 namespace Chess
 {
@@ -15,29 +14,51 @@ namespace Chess
             this.fenetrePrincipale = fenetrePrincipale;
             
             // Récupère la liste des joueurs depuis FenetrePrincipale
-            List<Score> scores = fenetrePrincipale.ObtenirListeScores();
+            List<String> scores = fenetrePrincipale.ObtenirListeScores();
             
             afficherJoueurScore(scores);
         }
 
-        private void afficherJoueurScore(List<Score> scores)
+        private void afficherJoueurScore(List<string> lignes)
         {
-            
+            // Effacer les colonnes actuelles de la table
             dataScores.Columns.Clear();
-            
-            var donnees = new List<Object>();
-            foreach (var score in scores)
+
+            var donnees = new List<object>();
+
+            foreach (var ligne in lignes)
             {
-                donnees.Add(new
+                try
                 {
-                    JoueurID = score.Joueur.JoueurID,
-                    Nom = score.Joueur.Nom,
-                    Points = score.Points,
-                    Classement = score.Joueur.Classement,
-                });
+                    // Découper la chaîne en parties (on suppose le format "JoueurID;Nom;Victoire;Défaite;PartNulle;Classement;Points")
+                    var parts = ligne.Split(';');
+
+                    if (parts.Length != 7) // S'assurer qu'il y a exactement 7 parties
+                    {
+                        throw new FormatException($"Ligne mal formatée : {ligne}");
+                    }
+                    // Ajouter les données pour affichage (aucun besoin de classe Score ici)
+                    donnees.Add(new
+                    {
+                        JoueurID = int.Parse(parts[0]),  // JoueurID
+                        Nom = parts[1],  
+                        Points = int.Parse(parts[6]),   // Points// Nom
+                        Classement = int.Parse(parts[5])// Classement
+                    });
+                }
+                catch (FormatException ex)
+                {
+                    // Gérer les erreurs de format (log ou traitement silencieux)
+                    Console.WriteLine($"Erreur de format : {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    // Gérer toute autre erreur éventuelle
+                    Console.WriteLine($"Erreur : {ex.Message}");
+                }
             }
-            
-            //afficher les données
+
+            // Assigner les données au DataGridView
             dataScores.DataSource = donnees;
         }
 
@@ -56,30 +77,35 @@ namespace Chess
                     // Récupère l'ID du joueur à partir de la cellule
                     int joueurID = Convert.ToInt32(ligne.Cells["JoueurID"].Value);
 
-                    // Récupère les autres infos depuis les cellules (facultatif)
-                    string nom = ligne.Cells["Nom"].Value.ToString();
-
                     // Recherche du score correspondant au joueur
-                    Score score = fenetrePrincipale.ObtenirListeScores()
-                        .FirstOrDefault(s => s.Joueur != null && s.Joueur.JoueurID == joueurID);
+                    // Recherche de la chaîne correspondant au joueur via son ID dans la liste des scores
+                    string ligneScore = fenetrePrincipale.ObtenirListeScores()
+                        .FirstOrDefault(s => s.StartsWith($"{joueurID};"));
 
-                    if (score != null)
+
+                    if (!string.IsNullOrEmpty(ligneScore))
                     {
-                        Console.WriteLine(score.ToString());
-                    }
-                    else
-                    {
-                        Console.WriteLine("erreur ici");
-                    }
-                    
-                    if (score != null)
-                    {
+                        // Analyse la chaîne pour récupérer les données du joueur et son score
+                        var parts = ligneScore.Split(';');
+                        if (parts.Length != 7) // Vérifie qu'on a bien toutes les informations nécessaires
+                        {
+                            throw new FormatException($"La ligne de score est mal formatée : {ligneScore}");
+                        }
+
+                        // Récupère les informations
+                        string nom = parts[1];
+                        int victoire = int.Parse(parts[2]);
+                        int defaite = int.Parse(parts[3]);
+                        int partNulle = int.Parse(parts[4]);
+                        int classement = int.Parse(parts[5]);
+                        int points = int.Parse(parts[6]);
+                        
                         // Met à jour les labels avec les infos du joueur
                         lblNom.Text = $"{nom}";
-                        lblVictoire.Text = $"{score.Joueur.Victoire}";
-                        lblDefaite.Text = $"{score.Joueur.Defaite}";
-                        lblNull.Text = $"{score.Joueur.PartNulle}";
-                        lblClassement.Text = $"{score.Joueur.Classement}";
+                        lblVictoire.Text = $"{victoire}";
+                        lblDefaite.Text = $"{defaite}";
+                        lblNull.Text = $"{partNulle}";
+                        lblClassement.Text = $"{classement}";
                     }
                     else
                     {

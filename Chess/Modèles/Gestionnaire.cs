@@ -80,9 +80,9 @@ namespace Chess.Modèles
             Sauvegarder(fichierScores, listeScores);
         }
 
-        public int CreerNouvellePartie(List<Joueur> joueurs)
+        public int CreerNouvellePartie(List<String> joueurs)
         {
-            var nouvellePartie = new Partie(joueurs[0], joueurs[1]);
+            var nouvellePartie = new Partie(Joueur.FromString(joueurs[0]), Joueur.FromString(joueurs[1]));
             listeParties.Add(nouvellePartie);
             partieActuelle = nouvellePartie;
 
@@ -125,6 +125,26 @@ namespace Chess.Modèles
             Joueur joueur = new Joueur(nomJoueur);
             listJoueurs.Add(joueur);
         }
+        
+        public List<string> ObtenirScoresFormatString()
+        {
+            List<string> scores = new List<string>();
+            foreach (var score in listeScores)
+            {
+                scores.Add(score.ToString()); // Utilise ToString() de Score
+            }
+            return scores;
+        }
+        public List<string> ObtenirJoueurFormatString()
+        {
+            List<string> joueurs = new List<string>();
+            foreach (var joueur in listJoueurs)
+            {
+                joueurs.Add(joueur.ToString()); // Utilise ToString() de Score
+            }
+            return joueurs;
+        }
+
 
     }
 
