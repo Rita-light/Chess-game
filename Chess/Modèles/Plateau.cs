@@ -105,26 +105,27 @@ namespace Chess.Modèles
             if (pieceDepart == null)
                 throw new InvalidOperationException("Aucune pièce à déplacer.");
 
-            bool estRoque = EstUnRoque(coup, pieceDepart);
-
             EffectuerCapture(coup);
-
-            // Déplacement de la pièce
-            pieceDepart.SetPosition(coup.Destination);
-            SetPiece(coup.Destination, pieceDepart);
-            SetPiece(coup.Depart, null);
-
-
-
-            if (estRoque && pieceDepart is Roi)
-                AppliquerRoque(coup);
-            else if (pieceDepart.Type == TypePiece.Pion)
-                ValiderCoupEnPassant(coup, (Pion)pieceDepart);
-            else
-                ReinitialiserEnPassant();
+            DeplacerPiece(coup);
+            Arbitre.TraiterCoupSpecial(coup, pieceDepart);
 
             // TODO: promotion, etc.
         }
+
+        private void DeplacerPiece(Coup coup)
+        {
+            Piece pieceDepart = GetPiece(coup.Depart);
+            if (pieceDepart == null)
+                throw new InvalidOperationException("Aucune pièce à déplacer.");
+
+            // Mise à jour de la position de la pièce
+            pieceDepart.SetPosition(coup.Destination);
+
+            // Mise à jour de l'échiquier
+            SetPiece(coup.Destination, pieceDepart);
+            SetPiece(coup.Depart, null);
+        }
+
 
         //-------------------------------------------------------------------------
         // Détection de l'échec
@@ -203,7 +204,7 @@ namespace Chess.Modèles
         /// <summary>
         /// Applique le roque en déplaçant la tour associée.
         /// </summary>
-        private void AppliquerRoque(Coup coup)
+        public void AppliquerRoque(Coup coup)
         {
             // Petit roque
             if (coup.Destination.X > coup.Depart.X)
@@ -239,7 +240,7 @@ namespace Chess.Modèles
         /// - capture en passant si le pion se déplace diagonalement vers EnPassantPosition
         /// - puis réinitialisation
         /// </summary>
-        private void ValiderCoupEnPassant(Coup coup, Pion pion)
+        public void ValiderCoupEnPassant(Coup coup, Pion pion)
         {
             int dy = Math.Abs(coup.Destination.Y - coup.Depart.Y);
 
@@ -266,7 +267,7 @@ namespace Chess.Modèles
         /// <summary>
         /// Réinitialise la case en passant.
         /// </summary>
-        private void ReinitialiserEnPassant()
+        public void ReinitialiserEnPassant()
         {
             EnPassantPosition = null;
         }
@@ -274,16 +275,6 @@ namespace Chess.Modèles
         //-------------------------------------------------------------------------
         // Méthodes utilitaires
         //-------------------------------------------------------------------------
-
-        private bool EstUnRoque(Coup coup, Piece pieceDepart)
-        {
-            if (pieceDepart.Type != TypePiece.Roi)
-                return false;
-
-            int dx = Math.Abs(coup.Destination.X - coup.Depart.X);
-            int dy = Math.Abs(coup.Destination.Y - coup.Depart.Y);
-            return (dx == 2 && dy == 0);
-        }
 
         public bool EstCheminLibre(Coup coup)
         {

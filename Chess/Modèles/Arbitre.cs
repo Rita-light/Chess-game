@@ -18,11 +18,9 @@ namespace Chess.Modèles
             if (!ValiderCoupBasique(coup, out Piece pieceDepart, out Piece pieceDestination))
                 return false;
 
-            // Vérification élémentaire du mouvement pour la pièce
             if (!pieceDepart.EstMouvementValide(coup))
                 return false;
 
-            // Gestion spéciale du Roi (roque)
             if (pieceDepart.Type == TypePiece.Roi)
             {
                 int dx = Math.Abs(coup.Destination.X - coup.Depart.X);
@@ -69,9 +67,41 @@ namespace Chess.Modèles
             return true;
         }
 
+        public void TraiterCoupSpecial(Coup coup, Piece pieceDepart)
+        {
+            // Gérer le roque
+            if (pieceDepart != null && pieceDepart.Type == TypePiece.Roi && EstUnRoque(coup, pieceDepart))
+            {
+                // Appliquer le roque via Plateau
+                Plateau.AppliquerRoque(coup);
+                return;
+            }
+
+            // Gérer l'en passant pour un pion
+            if (pieceDepart != null && pieceDepart.Type == TypePiece.Pion)
+            {
+                // Valider et appliquer l'en passant
+                Plateau.ValiderCoupEnPassant(coup, (Pion)pieceDepart);
+                return;
+            }
+
+            // Si aucun coup spécial n'est détecté, réinitialiser la case en passant
+            Plateau.ReinitialiserEnPassant();
+        }
+
         //-------------------------------------------------------------------------
         // Méthodes internes
         //-------------------------------------------------------------------------
+
+        private bool EstUnRoque(Coup coup, Piece pieceDepart)
+        {
+            if (pieceDepart.Type != TypePiece.Roi)
+                return false;
+
+            int dx = Math.Abs(coup.Destination.X - coup.Depart.X);
+            int dy = Math.Abs(coup.Destination.Y - coup.Depart.Y);
+            return (dx == 2 && dy == 0);
+        }
 
         private bool SimulerCoupEtVerifierEchec(Coup coup, Piece pieceDepart, Piece pieceDestination)
         {
