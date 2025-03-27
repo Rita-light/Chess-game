@@ -22,11 +22,11 @@ namespace Chess
         }
         
         // Méthode pour afficher les joueurs dans la ListView
-        private void AfficherJoueursDansListView(List<string> lignes)
+        private void AfficherJoueursDansListView(List<string> joueur)
         {
             lstJoueurs.Items.Clear(); // Nettoie d'abord la ListView pour éviter les doublons
 
-            foreach (var ligne in lignes)
+            foreach (var ligne in joueur)
             {
                 try
                 {

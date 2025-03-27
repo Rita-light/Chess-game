@@ -19,14 +19,14 @@ namespace Chess
             afficherJoueurScore(scores);
         }
 
-        private void afficherJoueurScore(List<string> lignes)
+        private void afficherJoueurScore(List<string> scores)
         {
             // Effacer les colonnes actuelles de la table
             dataScores.Columns.Clear();
 
             var donnees = new List<object>();
 
-            foreach (var ligne in lignes)
+            foreach (var ligne in scores)
             {
                 try
                 {

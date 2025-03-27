@@ -72,12 +72,7 @@ namespace Chess.Modèles
             get { return partNulle; }
             set { partNulle = value; }
         }
-
-        public int Parties
-        {
-            get { return victoire + defaite; }
-        }
-
+        
 
         // Méthode ToString - Convertit l'objet en chaîne de caractères
         public override string ToString()
@@ -119,7 +114,6 @@ namespace Chess.Modèles
         {
             return Nom.GetHashCode();
         }
-
-
+        
     }
 }

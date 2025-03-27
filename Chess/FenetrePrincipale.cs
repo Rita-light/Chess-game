@@ -14,7 +14,6 @@ namespace Chess
         // Attributs pour les fenêtres secondaires
         private StatistiqueGUI statistiqueGUI;
         private SelectionnerJoueurGUI selectionnerJoueurGUI;
-        private PlateauGUI plateauGUI;
         public FenetrePrincipale(JeuController controller)
         {
             InitializeComponent();

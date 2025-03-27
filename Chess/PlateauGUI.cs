@@ -8,7 +8,7 @@ namespace Chess
     {
         private FenetrePrincipale fenetrePrincipale;
         private int partieID;
-        private Graphics myGraph;
+        Graphics myGraph;
         int CaseSourceX = -1; 
         int CaseSourceY = -1;
         public PlateauGUI(FenetrePrincipale fenetrePrincipale, int partieID)

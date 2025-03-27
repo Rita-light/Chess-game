@@ -33,19 +33,7 @@ namespace Chess.Modèles
             PointNoir = 0;
             Plateau = new Plateau();
         }
-
-        public void InitialiserPartie(Joueur joueurBlanc, Joueur joueurNoir)
-        {
-            throw new System.NotImplementedException();
-            // TODO: Réinitialiser les scores, l'historique des coups et assigner les joueurs.
-        }
-
-        public void InitialiserPlateau()
-        {
-            throw new System.NotImplementedException();
-            // TODO: Mettre en place le plateau avec toutes les pièces à leur position initiale.
-        }
-
+        
         public bool ExecuterCoup(Coup coup)
         {
             Boolean coupValide ;
@@ -89,9 +77,7 @@ namespace Chess.Modèles
 
             return true; // Coup valide
         }
-
-
-
+        
         public void ChangerTour()
         {
             // Alterner JoueurActuel entre JoueurBlanc et JoueurNoir.

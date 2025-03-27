@@ -13,8 +13,8 @@ namespace Chess.Modèles
         public List<Score> listeScores { get; private set; } = new List<Score>();
         public Partie partieActuelle { get; set; }
 
-        private string fichierJoueurs = @"Joueurs.txt";
-        private string fichierScores = @"Scores.txt";
+        private static String fichierJoueurs = @"Joueurs.txt";
+        private static String fichierScores = @"Scores.txt";
 
         public Gestionnaire()
         {

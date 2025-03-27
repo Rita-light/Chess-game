@@ -34,14 +34,6 @@ namespace Chess.Controlleurs
             return gestionnaire.ObtenirScoresFormatString();
         }
 
-        public void AjouterJoueur(string nom)
-        {
-            if(string.IsNullOrWhiteSpace(nom)){
-                throw new ArgumentException("Le nom du joueur ne peut pas être vide.");
-            }
-            gestionnaire.listJoueurs.Add(new Joueur(nom));
-        }
-
         public int CreerNouvellePartie(List<String> joueurs)
         {
             int partieID = gestionnaire.CreerNouvellePartie(joueurs);
@@ -52,7 +44,6 @@ namespace Chess.Controlleurs
         {
             return gestionnaire.ObtenirNomJoueur();
         }
-        
         
         public String ObtenirPlateauActuel()
         {
