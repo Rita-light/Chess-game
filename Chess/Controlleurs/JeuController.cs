@@ -13,7 +13,7 @@ namespace Chess.Controlleurs
         
         public JeuController()
         {
-            this.gestionnaire = new Gestionnaire(); 
+            this.gestionnaire = new Gestionnaire(this); 
             this.fenetrePrincipale = new FenetrePrincipale(this);  
         }
 
@@ -60,6 +60,19 @@ namespace Chess.Controlleurs
         public void CreerNouveauJoueur(String nomJoueur)
         {
             gestionnaire.CreerNouveauJoueur(nomJoueur);
+        }
+        public int ObtenirId()
+        {
+            return gestionnaire.ObtenirId();
+        }
+        
+        public void AfficherMessageErreur(String message)
+        {
+             fenetrePrincipale.AfficherMessageErreur(message);
+        }
+        public void AfficherMessage(String message)
+        {
+            fenetrePrincipale.AfficherMessage(message);
         }
     }
 }

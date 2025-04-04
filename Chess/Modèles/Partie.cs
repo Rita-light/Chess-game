@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Chess.Modèles
 {
     public class Partie
     {
         private static int dernierID = 0;
+        private Gestionnaire gestionnaire;
         public int ID { get; private set; }
         public Plateau Plateau { get; private set; }
         public Joueur JoueurBlanc { get; private set; }
@@ -16,7 +18,7 @@ namespace Chess.Modèles
         public int PointBlanc { get; private set; }
         public int PointNoir { get; private set; }
 
-        public Partie(Joueur joueurBlanc, Joueur joueurNoir)
+        public Partie(Joueur joueurBlanc, Joueur joueurNoir, Gestionnaire gestionnaire)
         {
             ID = ++dernierID;
             if (joueurBlanc == null)
@@ -32,6 +34,7 @@ namespace Chess.Modèles
             PointBlanc = 0;
             PointNoir = 0;
             Plateau = new Plateau();
+            this.gestionnaire = gestionnaire;
         }
         
         public bool ExecuterCoup(Coup coup)
@@ -40,9 +43,15 @@ namespace Chess.Modèles
             if (EstpieceJoueurActuel(coup))
             {
                 coupValide = Plateau.EstCoupValide(coup);
-            } else
+                if (!coupValide){
+                    AfficherMessageErreur("Le coup joué est un coup invalide");
+                }
+            } 
+            else
             {
+                AfficherMessageErreur("La pièce ne correspond pas au joueur actuel.");
                 coupValide = false;
+                
             }
 
             if (coupValide)
@@ -52,7 +61,7 @@ namespace Chess.Modèles
                 ChangerTour();
                 return true;
             }
-
+            
             return false;
         }
 
@@ -64,6 +73,8 @@ namespace Chess.Modèles
             // Si aucune pièce n'existe à la position, le coup est invalide
             if (pieceBlanche == null)
             {
+                AfficherMessageErreur("Case de depart vide");
+                Thread.Sleep(2000);
                 Console.WriteLine("Erreur : Aucun pièce à cette position.");
                 return false;
             }
@@ -71,6 +82,8 @@ namespace Chess.Modèles
             // Vérification selon le joueur actuel
             if ((JoueurActuel.Equals(JoueurBlanc) && pieceBlanche != true) || (JoueurActuel.Equals(JoueurNoir) && pieceBlanche != false))
             {
+                AfficherMessageErreur("Erreur : La pièce ne correspond pas au joueur actuel.");
+                Thread.Sleep(2000);
                 Console.WriteLine("Erreur : La pièce ne correspond pas au joueur actuel.");
                 return false;
             }
@@ -85,9 +98,11 @@ namespace Chess.Modèles
             if (JoueurActuel.Equals(JoueurBlanc))
             {
                 JoueurActuel = JoueurNoir;
+                AfficherMessage("Tour du joueur noir");
             } else
             {
                 JoueurActuel = JoueurBlanc;
+                AfficherMessage("Tour du joueur blanc");
             }
 
         }
@@ -130,6 +145,15 @@ namespace Chess.Modèles
         public override int GetHashCode()
         {
             return ID.GetHashCode();
+        }
+        
+        public void AfficherMessageErreur(String message)
+        {
+            gestionnaire.AfficherMessageErreur(message);
+        }
+        public void AfficherMessage(String message)
+        {
+            gestionnaire.AfficherMessage(message);
         }
     }
 }

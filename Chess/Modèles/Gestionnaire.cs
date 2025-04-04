@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Chess.Controlleurs;
 
 namespace Chess.Modèles
 {
 
     public class Gestionnaire
     {
+        private JeuController controller;
         public List<Joueur> listJoueurs { get; private set; } = new List<Joueur>();
         public List<Partie> listeParties { get; private set; } = new List<Partie>();
         public List<Score> listeScores { get; private set; } = new List<Score>();
@@ -16,8 +18,9 @@ namespace Chess.Modèles
         private static String fichierJoueurs = @"Joueurs.txt";
         private static String fichierScores = @"Scores.txt";
 
-        public Gestionnaire()
+        public Gestionnaire(JeuController controller)
         {
+            this.controller = controller;
             ChargerTout();
             InitialiserDernierID();
         }
@@ -82,7 +85,7 @@ namespace Chess.Modèles
 
         public int CreerNouvellePartie(List<String> joueurs)
         {
-            var nouvellePartie = new Partie(Joueur.FromString(joueurs[0]), Joueur.FromString(joueurs[1]));
+            var nouvellePartie = new Partie(Joueur.FromString(joueurs[0]), Joueur.FromString(joueurs[1]), this);
             listeParties.Add(nouvellePartie);
             partieActuelle = nouvellePartie;
 
@@ -143,6 +146,20 @@ namespace Chess.Modèles
                 joueurs.Add(joueur.ToString()); // Utilise ToString() de Score
             }
             return joueurs;
+        }
+        public int ObtenirId()
+        {
+            return partieActuelle != null ? partieActuelle.ID : -1; // Retourne -1 si aucune partie n'est définie
+        }
+
+        
+        public void AfficherMessageErreur( String message )
+        {
+              controller.AfficherMessageErreur(message);
+        }
+        public void AfficherMessage( String message )
+        {
+            controller.AfficherMessage(message);
         }
 
 

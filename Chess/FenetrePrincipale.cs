@@ -14,6 +14,8 @@ namespace Chess
         // Attributs pour les fenêtres secondaires
         private StatistiqueGUI statistiqueGUI;
         private SelectionnerJoueurGUI selectionnerJoueurGUI;
+        private List<PlateauGUI> listePlateaux;
+        public PlateauGUI plateauGuiActuel;
         public FenetrePrincipale(JeuController controller)
         {
             InitializeComponent();
@@ -21,6 +23,7 @@ namespace Chess
             this.controller = controller; // Enregistre le contrôleur
             this.statistiqueGUI = new StatistiqueGUI(this); // Crée l'instance de la fenêtre StatistiqueGUI
             this.selectionnerJoueurGUI = new SelectionnerJoueurGUI(this); // Initialise avec les joueurs
+            this.listePlateaux = new List<PlateauGUI>();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -60,7 +63,9 @@ namespace Chess
             int partieID = controller.CreerNouvellePartie(joueurs);
             
             // Ouvrir PlateauGUI pour cette partie
-            new PlateauGUI(this, partieID).Show();
+             plateauGuiActuel = new PlateauGUI(this, partieID);
+             listePlateaux.Add(plateauGuiActuel);
+             plateauGuiActuel.Show();
         }
 
         public (String, String) ObtenirNomJoueur()
@@ -82,5 +87,44 @@ namespace Chess
         {
             controller.CreerNouveauJoueur(nomJoueur);
         }
+        
+        public int ObtenirIdPartie()
+        {
+            return controller.ObtenirId();
+        }
+      
+        
+        public void AfficherMessageErreur(String message)
+        {
+            int indexPlateau = TrouverIndexPlateauParPartieID(ObtenirIdPartie());
+            if (indexPlateau >= 0 && indexPlateau < listePlateaux.Count)
+            {
+                listePlateaux[indexPlateau].AfficherMessageErreur(message);
+            }
+            
+        }
+        public void AfficherMessage(String message)
+        {
+            int indexPlateau = TrouverIndexPlateauParPartieID(ObtenirIdPartie());
+            if (indexPlateau >= 0 && indexPlateau < listePlateaux.Count)
+            {
+                listePlateaux[indexPlateau].AfficherMessage(message);
+            }
+            
+        }
+        
+        public int TrouverIndexPlateauParPartieID(int partieID)
+        {
+            for (int i = 0; i < listePlateaux.Count; i++)
+            {
+                if (listePlateaux[i].PartieID == partieID)
+                {
+                    return i; // On a trouvé le bon plateau
+                }
+            }
+
+            return -1; // Si aucun plateau ne correspond
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Chess
@@ -17,6 +18,10 @@ namespace Chess
             this.fenetrePrincipale = fenetrePrincipale;
             this.partieID = partieID;
             
+        }
+        public int PartieID
+        {
+            get { return partieID; }
         }
         private void pnlEchequier_Paint(object sender, PaintEventArgs e)
         {
@@ -102,6 +107,7 @@ namespace Chess
             //throw new System.NotImplementedException();
             AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
             btnDemarrerPartie.Enabled = false;
+            AfficherMessage("Tour du joueur Blanc");
         }
         
         private void pnlEchiquier_MouseClick(object sender, MouseEventArgs e)
@@ -113,48 +119,67 @@ namespace Chess
             // Calculer les coordonnées de la case cliquée
             int caseX = e.X / tailleX;
             int caseY = e.Y / tailleY;
-            
-            // S'il s'agit de la même case de départ...
-            if ((this.CaseSourceX == caseX) && (this.CaseSourceY == caseY))
-            {
-                myGraph.DrawRectangle(new Pen(Color.Chocolate, 2), this.CaseSourceX * tailleX, this.CaseSourceY * tailleY, tailleX, tailleY);
-                this.CaseSourceX = this.CaseSourceY = -1;
-            }
-            // S'il n'y a pas de case départ sélectionnée...
-            else if ((this.CaseSourceX == -1) && (this.CaseSourceY == -1))
-            {
-                this.CaseSourceX = caseX;
-                this.CaseSourceY = caseY;
-                myGraph.DrawRectangle(new Pen(Color.DarkGreen, 2), this.CaseSourceX * tailleX, this.CaseSourceY * tailleY, tailleX, tailleY);
-            }
-            // S'il s'agit de la case destination...
-            else
-            {
-                myGraph.DrawRectangle(new Pen(Color.Chocolate, 2), this.CaseSourceX * tailleX, this.CaseSourceY * tailleY, tailleX, tailleY);
-                
-                //Code pour jouer coup......
-                
-                Boolean coupAppliquer = fenetrePrincipale.jouerCoup(CaseSourceX, CaseSourceY, caseX, caseY, partieID);
-                Console.WriteLine($@"{coupAppliquer}");
 
-                if (coupAppliquer)
-                {   
-                    pnlEchiquier.Refresh();
-                    MettreAJourPlateau();
+            if (btnDemarrerPartie.Enabled == false)
+            {
+                // S'il s'agit de la même case de départ...
+                if ((this.CaseSourceX == caseX) && (this.CaseSourceY == caseY))
+                {
+                    myGraph.DrawRectangle(new Pen(Color.Chocolate, 2), this.CaseSourceX * tailleX, this.CaseSourceY * tailleY, tailleX, tailleY);
+                    this.CaseSourceX = this.CaseSourceY = -1;
                 }
+                // S'il n'y a pas de case départ sélectionnée...
+                else if ((this.CaseSourceX == -1) && (this.CaseSourceY == -1))
+                {
+                    this.CaseSourceX = caseX;
+                    this.CaseSourceY = caseY;
+                    myGraph.DrawRectangle(new Pen(Color.DarkGreen, 2), this.CaseSourceX * tailleX, this.CaseSourceY * tailleY, tailleX, tailleY);
+                }
+                // S'il s'agit de la case destination...
                 else
                 {
-                    Console.WriteLine("Erreur");
-                }
-                System.Threading.Thread.Sleep(1000);
+                    myGraph.DrawRectangle(new Pen(Color.Chocolate, 2), this.CaseSourceX * tailleX, this.CaseSourceY * tailleY, tailleX, tailleY);
                 
-                this.CaseSourceX = this.CaseSourceY = -1;
+                    //Code pour jouer coup......
+                
+                    Boolean coupAppliquer = fenetrePrincipale.jouerCoup(CaseSourceX, CaseSourceY, caseX, caseY, partieID);
+                    Console.WriteLine($@"{coupAppliquer}");
+
+                    if (coupAppliquer)
+                    {   
+                        pnlEchiquier.Refresh();
+                        MettreAJourPlateau();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Erreur");
+                    }
+                    System.Threading.Thread.Sleep(1000);
+                
+                    this.CaseSourceX = this.CaseSourceY = -1;
+                }
             }
+           
         }
         
         public void MettreAJourPlateau()
         {
             AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
+        }
+        
+        public void AfficherMessageErreur(string message)
+        {
+            // Mettre à jour le texte du label avec le message d'erreur
+            lblTxt.Text = message;
+            // Vous pouvez aussi personnaliser la couleur ou d'autres propriétés si nécessaire
+            lblTxt.ForeColor = Color.Red;  // Exemple : afficher le texte en rouge
+        }
+        public void AfficherMessage(string message)
+        {
+            // Mettre à jour le texte du label avec le message d'erreur
+            lblTxt.Text = message;
+            // Vous pouvez aussi personnaliser la couleur ou d'autres propriétés si nécessaire
+            lblTxt.ForeColor = Color.MidnightBlue;  // Exemple : afficher le texte en rouge
         }
         
     }

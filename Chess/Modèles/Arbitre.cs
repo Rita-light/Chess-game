@@ -63,7 +63,7 @@ namespace Chess.Modèles
 
             if (SimulerCoupEtVerifierEchec(coup, pieceDepart, pieceDestination))
                 return false;
-
+            
             return true;
         }
 
