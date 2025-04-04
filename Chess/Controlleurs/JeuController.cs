@@ -74,5 +74,15 @@ namespace Chess.Controlleurs
         {
             fenetrePrincipale.AfficherMessage(message);
         }
+        
+        public void QuitterProgramme()
+        {
+            // Appeler la méthode dans le Gestionnaire pour vérifier les parties
+            gestionnaire.QuitterProgramme();
+
+            // Indiquer que le contrôleur a fini de gérer la fermeture
+            MessageBox.Show("Toutes les interfaces ont été fermées.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
     }
 }

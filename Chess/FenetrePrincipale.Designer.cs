@@ -35,6 +35,7 @@ namespace Chess
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnClosed = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,6 +62,7 @@ namespace Chess
             // 
             // button2
             // 
+            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button2.Location = new System.Drawing.Point(223, 40);
             this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
@@ -83,6 +85,7 @@ namespace Chess
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnClosed);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.button2);
@@ -90,9 +93,19 @@ namespace Chess
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(673, 150);
+            this.groupBox1.Size = new System.Drawing.Size(673, 224);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
+            // 
+            // btnClosed
+            // 
+            this.btnClosed.Location = new System.Drawing.Point(195, 137);
+            this.btnClosed.Name = "btnClosed";
+            this.btnClosed.Size = new System.Drawing.Size(253, 59);
+            this.btnClosed.TabIndex = 4;
+            this.btnClosed.Text = "Fermer";
+            this.btnClosed.UseVisualStyleBackColor = true;
+            this.btnClosed.Click += new System.EventHandler(this.button4_Click);
             // 
             // FenetrePrincipale
             // 
@@ -108,6 +121,8 @@ namespace Chess
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
+        private System.Windows.Forms.Button btnClosed;
 
         #endregion
 

@@ -126,5 +126,35 @@ namespace Chess
             return -1; // Si aucun plateau ne correspond
         }
 
+        
+        private void QuitterProgramme()
+            {
+                // Demande de confirmation avant de fermer
+                DialogResult resultat = MessageBox.Show(
+                    "Voulez-vous vraiment fermer le programme ?",
+                    "Confirmation",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                // Si l'utilisateur clique sur "Non", annulez la fermeture
+                if (resultat == DialogResult.Yes)
+                {          
+                    controller.QuitterProgramme();
+                    Application.Exit();
+                }
+                else
+                {
+                    MessageBox.Show("Fermeture annulée.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Exécutez votre logique personnalisée ici avant de fermer
+                    
+                }
+            }
+        
+        private void button4_Click(object sender, EventArgs e)
+        {
+            QuitterProgramme();
+        }
     }
+    
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using Chess.Controlleurs;
 
 namespace Chess.Modèles
@@ -161,6 +162,25 @@ namespace Chess.Modèles
         {
             controller.AfficherMessage(message);
         }
+        
+        public void QuitterProgramme()
+        {
+            // Vérifier si toutes les parties sont terminées
+            foreach (var partie in listeParties)
+            {
+                if (!partie.EstTermine)
+                { 
+                    Console.WriteLine($"La partie {partie.ID} n'est pas terminée. Elle sera fermée automatiquement.");
+                    partie.TerminerPartie();
+                }
+            }
+            // Sauvegarder les données
+            SauvegarderTout();
+
+            // Signaler que le gestionnaire a terminé
+            MessageBox.Show("Données sauvegardées. Le programme peut maintenant être fermé.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
 
 
     }

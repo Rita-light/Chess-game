@@ -118,11 +118,14 @@ namespace Chess.Modèles
             // TODO: Implémenter la vérification des conditions de match nul.
         }
 
+       
         public void TerminerPartie()
         {
-            throw new System.NotImplementedException();
-            // TODO: Finaliser la partie en marquant EstTermine, sauvegarder les scores dans un fichier, etc.
+            // Marquer la partie comme terminée
+            EstTermine = true;
+            Console.WriteLine($"Partie {ID} : marquée comme terminée.");
         }
+
 
         //-------------------------------------------------------------------------
         // Overrides
