@@ -80,8 +80,12 @@ namespace Chess.Controlleurs
         }
         public bool AbandonnerPartie(int joueurID, int partieID)
         {
-            // Signaler l'abandon au contrôleur
             return gestionnaire.AbandonnerPartie(joueurID, partieID);
+        }
+        
+        public bool DemanderNulle(int partieID)
+        {
+            return gestionnaire.DemanderNulle(partieID);
         }
         
         public void QuitterProgramme()

@@ -288,6 +288,36 @@ namespace Chess
 
             return null; 
         }
+
+        private void btnNulle_Click(object sender, EventArgs e)
+        {
+            // Afficher une fenêtre de confirmation
+            var confirmation = MessageBox.Show(
+                "Êtes-vous sûr de vouloir annuler la partie et la déclarer nulle ?",
+                "Demande de Nulle",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (confirmation == DialogResult.Yes)
+            {
+                // Transmettre la demande à FenetrePrincipale
+                bool fermer = fenetrePrincipale.DemanderNulle(partieID);
+                if (fermer)
+                {
+                    this.Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Demande de nulle annulée.",
+                    "Action Annulée",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+        }
     }
 
 }

@@ -156,7 +156,21 @@ namespace Chess.Modèles
             
             return true;
         }
+        
+        public bool DemanderNulle()
+        {
+            // Donner un point à chaque joueur
+            PointBlanc = 1;
+            PointNoir = 1;
 
+            // Marquer la partie comme terminée
+            EstTermine = true;
+
+            // Exécuter la logique de fin de partie
+            TerminerPartie();
+            return true;
+        }
+        
         public void EstNulle()
         {
             throw new System.NotImplementedException();

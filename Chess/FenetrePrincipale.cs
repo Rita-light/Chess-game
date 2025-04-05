@@ -157,10 +157,13 @@ namespace Chess
         }
         public bool AbandonnerPartie(int joeurID, int partieID)
         {
-            // Signaler l'abandon au contrôleur
             return controller.AbandonnerPartie(joeurID, partieID);
         }
         
+        public bool DemanderNulle(int partieID)
+        {
+            return controller.DemanderNulle(partieID);
+        }
         private void button4_Click(object sender, EventArgs e)
         {
             QuitterProgramme();

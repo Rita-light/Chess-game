@@ -228,11 +228,22 @@ namespace Chess.Modèles
             partieActuelle = ObtenirPartieParId(partieID);
             if (partieActuelle != null)
             {
-                // Appeler la méthode abandonner partie sur la partie actuelle
                 return partieActuelle.AbandonnerPartie(joueurID);
             }
 
             return false;
+        }
+        
+        public bool DemanderNulle(int partieID)
+        {
+            partieActuelle = ObtenirPartieParId(partieID);
+            if (partieActuelle != null)
+            {
+                return partieActuelle.DemanderNulle();
+            }
+
+            return false;
+            
         }
 
     }

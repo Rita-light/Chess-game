@@ -43,7 +43,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnAbandon = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnNulle = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -184,7 +184,7 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.btnAbandon);
-            this.groupBox3.Controls.Add(this.button2);
+            this.groupBox3.Controls.Add(this.btnNulle);
             this.groupBox3.Location = new System.Drawing.Point(27, 624);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(399, 90);
@@ -202,14 +202,15 @@
             this.btnAbandon.UseVisualStyleBackColor = true;
             this.btnAbandon.Click += new System.EventHandler(this.btnAbandon_Click);
             // 
-            // button2
+            // btnNulle
             // 
-            this.button2.Location = new System.Drawing.Point(207, 21);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(174, 56);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnNulle.Location = new System.Drawing.Point(207, 21);
+            this.btnNulle.Name = "btnNulle";
+            this.btnNulle.Size = new System.Drawing.Size(174, 56);
+            this.btnNulle.TabIndex = 1;
+            this.btnNulle.Text = "Demander Nulle";
+            this.btnNulle.UseVisualStyleBackColor = true;
+            this.btnNulle.Click += new System.EventHandler(this.btnNulle_Click);
             // 
             // PlateauGUI
             // 
@@ -236,7 +237,7 @@
         }
 
         private System.Windows.Forms.Button btnAbandon;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnNulle;
 
         private System.Windows.Forms.GroupBox groupBox3;
 
