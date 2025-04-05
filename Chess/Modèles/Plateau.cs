@@ -79,14 +79,34 @@ namespace Chess.Modèles
         /// </summary>
         /// <param name="coup"></param>
         /// <returns></returns>
-        public bool? EstPieceBlanche(Coup coup)
+        public bool? EstPieceBlanche(Position position)
         {
-            Piece pieceDepart = GetPiece(coup.Depart);
-            if (pieceDepart == null)
+            Piece piece = GetPiece(position);
+            if (piece == null)
             {
                 return null;
             }
-            return pieceDepart.IsWhite;
+            return piece.IsWhite;
+        }
+        
+        /// <summary>
+        /// verifie si il y a eure une capture
+        /// </summary>
+        /// <param name="coup"></param>
+        /// <returns></returns>
+        public bool VerifierCapture(Coup coup)
+        {
+            bool? couleurPieceDepart = EstPieceBlanche(coup.Depart);
+            bool? couleurPieceDestination = EstPieceBlanche(coup.Destination);
+
+            // Si l'une des pièces est null, pas de capture possible
+            if (couleurPieceDepart == null || couleurPieceDestination == null)
+            {
+                return false;
+            }
+
+            // Vérifier si les pièces sont de couleurs différentes
+            return couleurPieceDepart != couleurPieceDestination;
         }
 
         //-------------------------------------------------------------------------

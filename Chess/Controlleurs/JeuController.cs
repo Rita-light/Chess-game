@@ -65,6 +65,10 @@ namespace Chess.Controlleurs
         {
             return gestionnaire.ObtenirId();
         }
+        public (int, int) ObtenirPoint()
+        {
+            return gestionnaire.ObtenirPoint();
+        }
         
         public void AfficherMessageErreur(String message)
         {

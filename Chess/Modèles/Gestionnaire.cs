@@ -97,6 +97,11 @@ namespace Chess.Modèles
         {
             return (partieActuelle.JoueurBlanc.Nom, partieActuelle.JoueurNoir.Nom);
         }
+        
+        public (int, int) ObtenirPoint()
+        {
+            return (partieActuelle.PointBlanc, partieActuelle.PointNoir);
+        }
 
         public String ObtenirPlateauActuel()
         {
@@ -114,6 +119,7 @@ namespace Chess.Modèles
             }
             return null; // Si aucune partie n'est trouvée
         }
+        
 
         public Boolean jouerCoup(int departX, int departY, int destinationX, int destinationY, int partieID)
         {
@@ -128,6 +134,8 @@ namespace Chess.Modèles
         {
             Joueur joueur = new Joueur(nomJoueur);
             listJoueurs.Add(joueur);
+            Score score = new Score(joueur);
+            listeScores.Add(score);
         }
         
         public List<string> ObtenirScoresFormatString()
@@ -171,9 +179,12 @@ namespace Chess.Modèles
                 if (!partie.EstTermine)
                 { 
                     Console.WriteLine($"La partie {partie.ID} n'est pas terminée. Elle sera fermée automatiquement.");
+                    partie.EstTermine = true;
                     partie.TerminerPartie();
                 }
             }
+            //ajuster Classement 
+            AjusterClassement();
             // Sauvegarder les données
             SauvegarderTout();
 
@@ -181,7 +192,36 @@ namespace Chess.Modèles
             MessageBox.Show("Données sauvegardées. Le programme peut maintenant être fermé.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        public void AjusterScore(int joueurID, int victoire, int defaite, int partNull, int point)
+        {
+            // Rechercher le score correspondant au joueur dans la liste
+            var scoreJoueur = listeScores.FirstOrDefault(s => s.Joueur.JoueurID == joueurID);
 
+            if (scoreJoueur != null)
+            {
+                // Appeler la méthode AjusterScore de la classe Score
+                scoreJoueur.AjusterScore(scoreJoueur.Joueur ,victoire, defaite, partNull, point);
+            }
+            else
+            {
+                Console.WriteLine($"Aucun score trouvé pour le joueur avec l'ID {joueurID}.");
+            }
+        }
+        
+        public void AjusterClassement()
+        {
+            // Trier la liste des scores par points (ordre décroissant)
+            var scoresTries = listeScores.OrderByDescending(s => s.Points).ToList();
+
+            // Mettre à jour le classement de chaque joueur
+            for (int i = 0; i < scoresTries.Count; i++)
+            {
+                scoresTries[i].Joueur.Classement = i + 1; // Classement commence à 1
+            }
+
+            Console.WriteLine("Le classement a été mis à jour.");
+        }
+        
 
     }
 

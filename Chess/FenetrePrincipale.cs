@@ -150,6 +150,11 @@ namespace Chess
                     
                 }
             }
+
+        public (int, int) ObtenirPoint()
+        {
+            return controller.ObtenirPoint();
+        }
         
         private void button4_Click(object sender, EventArgs e)
         {

@@ -165,6 +165,9 @@ namespace Chess
         public void MettreAJourPlateau()
         {
             AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
+            var (pointBlanc, pointNoir) = fenetrePrincipale.ObtenirPoint();
+            lblPointBlanc.Text = $@"{pointBlanc}";
+            lblPointNoir.Text = $@"{pointNoir}";
         }
         
         public void AfficherMessageErreur(string message)

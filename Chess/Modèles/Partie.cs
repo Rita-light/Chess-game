@@ -14,7 +14,7 @@ namespace Chess.Modèles
         public Joueur JoueurNoir { get; private set; }
         public Joueur JoueurActuel { get; private set; }
         public List<Coup> HistoriqueCoup { get; private set; }
-        public bool EstTermine { get; private set; }
+        public bool EstTermine { get; set; }
         public int PointBlanc { get; private set; }
         public int PointNoir { get; private set; }
 
@@ -56,7 +56,21 @@ namespace Chess.Modèles
 
             if (coupValide)
             {
+                bool estCapture = Plateau.VerifierCapture(coup);
                 Plateau.AppliquerCoup(coup);
+                
+                if (estCapture)
+                {
+                    if (JoueurActuel == JoueurBlanc)
+                    {
+                        PointBlanc += 1; // Mise à jour des points pour le joueur blanc
+                    }
+                    else if (JoueurActuel == JoueurNoir)
+                    {
+                        PointNoir += 1; // Mise à jour des points pour le joueur noir
+                    }
+                }
+                
                 HistoriqueCoup.Add(coup);
                 ChangerTour();
                 return true;
@@ -68,7 +82,7 @@ namespace Chess.Modèles
         public bool EstpieceJoueurActuel(Coup coup)
         {
             // Le plateau détermine la couleur de la pièce à la position donnée
-            bool? pieceBlanche = Plateau.EstPieceBlanche(coup);
+            bool? pieceBlanche = Plateau.EstPieceBlanche(coup.Depart);
 
             // Si aucune pièce n'existe à la position, le coup est invalide
             if (pieceBlanche == null)
@@ -121,9 +135,34 @@ namespace Chess.Modèles
        
         public void TerminerPartie()
         {
-            // Marquer la partie comme terminée
-            EstTermine = true;
-            Console.WriteLine($"Partie {ID} : marquée comme terminée.");
+            if (!EstTermine)
+            {
+                Console.WriteLine("La partie n'est pas encore terminée.");
+                return;
+            }
+
+            // Comparer les points et mettre à jour les scores
+            if (PointBlanc > PointNoir)
+            {
+                // Victoire Blanc, Défaite Noir
+               
+                gestionnaire.AjusterScore(JoueurBlanc.JoueurID, 1, 0 , 0, PointBlanc);
+                gestionnaire.AjusterScore(JoueurNoir.JoueurID,0, 1, 0, PointNoir);
+            }
+            else if (PointBlanc == PointNoir)
+            {
+                // Partie Nulle
+                gestionnaire.AjusterScore(JoueurBlanc.JoueurID, 0, 0 , 1, PointBlanc);
+                gestionnaire.AjusterScore(JoueurNoir.JoueurID,0, 0, 1, PointNoir);
+            }
+            else
+            {
+                // Victoire Noir, Défaite Blanc
+                gestionnaire.AjusterScore(JoueurBlanc.JoueurID, 0, 1 , 0, PointBlanc);
+                gestionnaire.AjusterScore(JoueurNoir.JoueurID,1, 0, 0, PointNoir);
+            }
+            
+            Console.WriteLine("Les scores ont été mis à jour.");
         }
 
 

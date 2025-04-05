@@ -13,11 +13,16 @@ namespace Chess.Modèles
             Points = points;
         }
 
-        public void AjouterPoints(int points)
+        public void AjusterScore(Joueur joueur, int victoire, int defaite, int partNulle, int points)
         {
+            // Mettre à jour les statistiques du joueur
+            joueur.Victoire += victoire;
+            joueur.Defaite += defaite;
+            joueur.PartNulle += partNulle;
+
+            // Ajouter les points au score actuel
             Points += points;
         }
-        
         
         public override string ToString()
         { 
