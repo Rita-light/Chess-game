@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Chess.Modèles
 {
@@ -121,9 +122,39 @@ namespace Chess.Modèles
 
         }
 
-        public void AbandonnerPartie(Joueur joueur)
+        public bool AbandonnerPartie(int joueurID)
         {
-            throw new System.NotImplementedException();
+            // Vérifier quel joueur abandonne
+            if (JoueurBlanc.JoueurID == joueurID)
+            {
+                // Le joueur blanc abandonne
+                PointBlanc = 0;   
+                PointNoir += 1;      
+            }
+            else if (JoueurNoir.JoueurID == joueurID)
+            {
+                // Le joueur noir abandonne
+                PointNoir = 0;      
+                PointBlanc += 1;    
+            }
+            else
+            {
+                // L'ID du joueur n'est pas valide
+                MessageBox.Show(
+                    "L'ID donné ne correspond à aucun joueur de la partie.",
+                    "Erreur d'abandon",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return false; 
+
+            }
+            
+            EstTermine = true;
+            
+            TerminerPartie();
+            
+            return true;
         }
 
         public void EstNulle()
@@ -162,6 +193,7 @@ namespace Chess.Modèles
                 gestionnaire.AjusterScore(JoueurNoir.JoueurID,1, 0, 0, PointNoir);
             }
             
+            gestionnaire.AjusterClassement();
             Console.WriteLine("Les scores ont été mis à jour.");
         }
 

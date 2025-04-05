@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using Microsoft.VisualBasic;
+
 
 namespace Chess
 {
@@ -19,10 +21,12 @@ namespace Chess
             this.partieID = partieID;
             
         }
+        
         public int PartieID
         {
             get { return partieID; }
         }
+        
         private void pnlEchequier_Paint(object sender, PaintEventArgs e)
         {
 
@@ -105,7 +109,7 @@ namespace Chess
         private void btnDemarrerPartie_Click(object sender, EventArgs e)
         {
             //throw new System.NotImplementedException();
-            AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
+            AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(partieID), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
             btnDemarrerPartie.Enabled = false;
             AfficherMessage("Tour du joueur Blanc");
         }
@@ -164,7 +168,7 @@ namespace Chess
         
         public void MettreAJourPlateau()
         {
-            AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
+            AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(partieID), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
             var (pointBlanc, pointNoir) = fenetrePrincipale.ObtenirPoint();
             lblPointBlanc.Text = $@"{pointBlanc}";
             lblPointNoir.Text = $@"{pointNoir}";
@@ -177,6 +181,7 @@ namespace Chess
             // Vous pouvez aussi personnaliser la couleur ou d'autres propriétés si nécessaire
             lblTxt.ForeColor = Color.Red;  // Exemple : afficher le texte en rouge
         }
+        
         public void AfficherMessage(string message)
         {
             // Mettre à jour le texte du label avec le message d'erreur
@@ -185,6 +190,104 @@ namespace Chess
             lblTxt.ForeColor = Color.MidnightBlue;  // Exemple : afficher le texte en rouge
         }
         
+        private void btnAbandon_Click(object sender, EventArgs a)
+        {
+            // Afficher une boîte de dialogue pour demander l'ID du joueur
+            string input = DemanderIDJoueur();
+
+            // Vérifier si l'utilisateur a fourni un ID valide
+            if (!string.IsNullOrEmpty(input) && int.TryParse(input, out int joueurID))
+            {
+                
+                var confirmation = MessageBox.Show(
+                    $"Le joueur avec l'ID {joueurID} va abandonner. Confirmez-vous ?",
+                    "Confirmation Abandon",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (confirmation == DialogResult.Yes)
+                {
+                    bool fermer = fenetrePrincipale.AbandonnerPartie(joueurID, partieID);
+                    if (fermer)
+                    {
+                        this.Close();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Abandon annulé.", "Action Annulée", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else
+            {
+                // Si l'ID est invalide ou si aucune entrée n'a été fournie
+                MessageBox.Show("ID invalide ou abandon annulé.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        
+        public string DemanderIDJoueur()
+        {
+            // Créer une fenêtre de dialogue personnalisée
+            Form prompt = new Form()
+            {
+                Width = 300,
+                Height = 150,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = "Abandonner Partie",
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            Label textLabel = new Label()
+            {
+                Left = 20,
+                Top = 20,
+                Text = "Entrez l'ID du joueur :",
+                AutoSize = true
+            };
+
+            TextBox inputBox = new TextBox()
+            {
+                Left = 20,
+                Top = 50,
+                Width = 240
+            };
+
+            Button confirmButton = new Button()
+            {
+                Text = "Confirmer",
+                Left = 20,
+                Width = 100,
+                Top = 80,
+                DialogResult = DialogResult.OK
+            };
+
+            Button cancelButton = new Button()
+            {
+                Text = "Annuler",
+                Left = 140,
+                Width = 100,
+                Top = 80,
+                DialogResult = DialogResult.Cancel
+            };
+
+            prompt.Controls.Add(textLabel);
+            prompt.Controls.Add(inputBox);
+            prompt.Controls.Add(confirmButton);
+            prompt.Controls.Add(cancelButton);
+
+            prompt.AcceptButton = confirmButton;
+            prompt.CancelButton = cancelButton;
+
+            DialogResult result = prompt.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                return inputBox.Text; 
+            }
+
+            return null; 
+        }
     }
 
 }

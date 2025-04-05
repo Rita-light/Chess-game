@@ -103,8 +103,9 @@ namespace Chess.Modèles
             return (partieActuelle.PointBlanc, partieActuelle.PointNoir);
         }
 
-        public String ObtenirPlateauActuel()
+        public String ObtenirPlateauActuel(int partieID)
         {
+            partieActuelle = ObtenirPartieParId(partieID);
             return partieActuelle.Plateau.ToString();
         }
 
@@ -222,6 +223,17 @@ namespace Chess.Modèles
             Console.WriteLine("Le classement a été mis à jour.");
         }
         
+        public bool AbandonnerPartie(int joueurID, int partieID)
+        {
+            partieActuelle = ObtenirPartieParId(partieID);
+            if (partieActuelle != null)
+            {
+                // Appeler la méthode abandonner partie sur la partie actuelle
+                return partieActuelle.AbandonnerPartie(joueurID);
+            }
+
+            return false;
+        }
 
     }
 

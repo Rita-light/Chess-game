@@ -45,10 +45,10 @@ namespace Chess.Controlleurs
             return gestionnaire.ObtenirNomJoueur();
         }
         
-        public String ObtenirPlateauActuel()
+        public String ObtenirPlateauActuel(int partieID)
         {
             
-            return gestionnaire.ObtenirPlateauActuel();
+            return gestionnaire.ObtenirPlateauActuel(partieID);
         }
 
         public Boolean jouerCoup(int departX, int departY, int destinationX, int destinationY, int partieID)
@@ -77,6 +77,11 @@ namespace Chess.Controlleurs
         public void AfficherMessage(String message)
         {
             fenetrePrincipale.AfficherMessage(message);
+        }
+        public bool AbandonnerPartie(int joueurID, int partieID)
+        {
+            // Signaler l'abandon au contrôleur
+            return gestionnaire.AbandonnerPartie(joueurID, partieID);
         }
         
         public void QuitterProgramme()

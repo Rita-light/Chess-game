@@ -73,9 +73,9 @@ namespace Chess
             return controller.ObtenirNomJoueur();
         }
         
-        public String ObtenirPlateauActuel()
+        public String ObtenirPlateauActuel(int partieID)
         {
-            return controller.ObtenirPlateauActuel();
+            return controller.ObtenirPlateauActuel(partieID);
         }
 
         public Boolean jouerCoup(int departX, int departY, int destinationX, int destinationY, int partieID)
@@ -154,6 +154,11 @@ namespace Chess
         public (int, int) ObtenirPoint()
         {
             return controller.ObtenirPoint();
+        }
+        public bool AbandonnerPartie(int joeurID, int partieID)
+        {
+            // Signaler l'abandon au contrôleur
+            return controller.AbandonnerPartie(joeurID, partieID);
         }
         
         private void button4_Click(object sender, EventArgs e)
