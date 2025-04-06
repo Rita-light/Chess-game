@@ -1,6 +1,7 @@
 ﻿using Chess.Modèles.Pièces;
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Chess.Modèles
 {
@@ -128,9 +129,17 @@ namespace Chess.Modèles
             EffectuerCapture(coup);
             DeplacerPiece(coup);
             Arbitre.TraiterCoupSpecial(coup, pieceDepart);
-
-            // TODO: promotion, etc.
+            
+            // Vérifier si le pion est promu
+            if (pieceDepart.Type == TypePiece.Pion )
+            {
+                if (EstEnPromotion(pieceDepart, coup.Destination))
+                {
+                    PromouvoirPion(pieceDepart, coup.Destination);
+                }
+            }
         }
+        
 
         private void DeplacerPiece(Coup coup)
         {
@@ -145,6 +154,63 @@ namespace Chess.Modèles
             SetPiece(coup.Destination, pieceDepart);
             SetPiece(coup.Depart, null);
         }
+        
+        
+        //-------------------------------------------------------------------------
+        // Promotion pièce
+        //-------------------------------------------------------------------------
+        private bool EstEnPromotion(Piece piece, Position position)
+        {
+            if (piece is Pion)
+            {
+                if ((piece.IsWhite && position.Y == 0) || (!piece.IsWhite && position.Y == 7))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        private void PromouvoirPion(Piece pion, Position position)
+        {
+            char choix = 'D'; // Par défaut
+
+            var form = new PromotionForm(); // Formulaire qui implémente l'interface
+            form.ShowDialog();
+
+            choix = form.Choix; // Récupère le choix du joueur
+
+            Piece piecePromue;
+
+            // En fonction du choix et de la couleur du pion
+            if (pion.IsWhite) // Si le pion est blanc
+            {
+                switch (choix)
+                {
+                    case 'T': piecePromue = new Tour(true, position); break;
+                    case 'F': piecePromue = new Fou(true, position); break;
+                    case 'C': piecePromue = new Cavalier(true, position); break;
+                    default: piecePromue = new Reine(true, position); break;
+                }
+            }
+            else // Si le pion est noir
+            {
+                switch (choix)
+                {
+                    case 'T': piecePromue = new Tour(false, position); break;
+                    case 'F': piecePromue = new Fou(false, position); break;
+                    case 'C': piecePromue = new Cavalier(false, position); break;
+                    default: piecePromue = new Reine(false, position); break;
+                }
+            }
+
+            // Remplacer le pion par la pièce promue sur l'échiquier
+            echequier[position.X, position.Y] = piecePromue;
+        }
+
+
+
+        
 
 
         //-------------------------------------------------------------------------

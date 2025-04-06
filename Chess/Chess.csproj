@@ -76,6 +76,7 @@
       <DependentUpon>PlateauGUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="PromitionForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelectionnerJoueurGUI.cs">
       <SubType>Form</SubType>
