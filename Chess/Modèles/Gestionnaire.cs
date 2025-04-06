@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Chess.Controlleurs;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Chess.Controlleurs;
 
 namespace Chess.Modèles
 {
@@ -97,7 +97,7 @@ namespace Chess.Modèles
         {
             return (partieActuelle.JoueurBlanc.Nom, partieActuelle.JoueurNoir.Nom);
         }
-        
+
         public (int, int) ObtenirPoint()
         {
             return (partieActuelle.PointBlanc, partieActuelle.PointNoir);
@@ -120,7 +120,7 @@ namespace Chess.Modèles
             }
             return null; // Si aucune partie n'est trouvée
         }
-        
+
 
         public Boolean jouerCoup(int departX, int departY, int destinationX, int destinationY, int partieID)
         {
@@ -138,7 +138,7 @@ namespace Chess.Modèles
             Score score = new Score(joueur);
             listeScores.Add(score);
         }
-        
+
         public List<string> ObtenirScoresFormatString()
         {
             List<string> scores = new List<string>();
@@ -162,23 +162,23 @@ namespace Chess.Modèles
             return partieActuelle != null ? partieActuelle.ID : -1; // Retourne -1 si aucune partie n'est définie
         }
 
-        
-        public void AfficherMessageErreur( String message )
+
+        public void AfficherMessageErreur(String message)
         {
-              controller.AfficherMessageErreur(message);
+            controller.AfficherMessageErreur(message);
         }
-        public void AfficherMessage( String message )
+        public void AfficherMessage(String message)
         {
             controller.AfficherMessage(message);
         }
-        
+
         public void QuitterProgramme()
         {
             // Vérifier si toutes les parties sont terminées
             foreach (var partie in listeParties)
             {
                 if (!partie.EstTermine)
-                { 
+                {
                     Console.WriteLine($"La partie {partie.ID} n'est pas terminée. Elle sera fermée automatiquement.");
                     partie.EstTermine = true;
                     partie.TerminerPartie();
@@ -201,7 +201,7 @@ namespace Chess.Modèles
             if (scoreJoueur != null)
             {
                 // Appeler la méthode AjusterScore de la classe Score
-                scoreJoueur.AjusterScore(scoreJoueur.Joueur ,victoire, defaite, partNull, point);
+                scoreJoueur.AjusterScore(scoreJoueur.Joueur, victoire, defaite, partNull, point);
                 var joueur = listJoueurs.FirstOrDefault(j => j.JoueurID == joueurID);
                 if (joueur != null)
                 {
@@ -210,14 +210,13 @@ namespace Chess.Modèles
                     joueur.PartNulle += partNull;
                     Console.WriteLine($"Le score du joueur {joueurID} a été mis à jour dans la liste des joueurs.");
                 }
-                
-            }
-            else
+
+            } else
             {
                 Console.WriteLine($"Aucun score trouvé pour le joueur avec l'ID {joueurID}.");
             }
         }
-        
+
         public void AjusterClassement()
         {
             // Trier la liste des scores par points (ordre décroissant)
@@ -226,8 +225,8 @@ namespace Chess.Modèles
             // Mettre à jour le classement de chaque joueur
             for (int i = 0; i < scoresTries.Count; i++)
             {
-                scoresTries[i].Joueur.Classement = i + 1; 
-                
+                scoresTries[i].Joueur.Classement = i + 1;
+
                 var joueur = listJoueurs.FirstOrDefault(j => j.JoueurID == scoresTries[i].Joueur.JoueurID);
                 if (joueur != null)
                 {
@@ -237,7 +236,7 @@ namespace Chess.Modèles
 
             Console.WriteLine("Le classement a été mis à jour.");
         }
-        
+
         public bool AbandonnerPartie(int joueurID, int partieID)
         {
             partieActuelle = ObtenirPartieParId(partieID);
@@ -248,17 +247,17 @@ namespace Chess.Modèles
 
             return false;
         }
-        
+
         public void DemanderNulle(int partieID)
         {
             partieActuelle = ObtenirPartieParId(partieID);
             if (partieActuelle != null)
             {
-                 partieActuelle.DemanderNulle();
+                partieActuelle.DemanderNulle();
             }
-            
+
         }
-        
+
         public void GererFinPartie()
         {
             // Relayer l'information au contrôleur

@@ -28,7 +28,12 @@ namespace Chess.Modèles
         }
 
         public abstract bool EstMouvementValide(Coup coup);
+
+        /// <returns>Un ensemble de positions attaquées ou contrôlées par la pièce.</returns>
         public abstract HashSet<Position> ObtenirAttaquesPossibles(Plateau plateau);
+
+        /// <returns>Un ensemble de positions de destination potentielles (où la pièce pourrait atterrir).</returns>
+        public abstract HashSet<Position> ObtenirDestinationsPotentielles(Plateau plateau);
 
         //-------------------------------------------------------------------------
         // Overrides

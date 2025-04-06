@@ -10,6 +10,8 @@ namespace Chess.Modèles
     {
         private static int dernierID = 0;
         private Gestionnaire gestionnaire;
+
+        public Arbitre Arbitre { get; private set; }
         public int ID { get; private set; }
         public Plateau Plateau { get; private set; }
         public Joueur JoueurBlanc { get; private set; }
@@ -39,55 +41,70 @@ namespace Chess.Modèles
             PointNoir = 0;
             Plateau = new Plateau();
             this.gestionnaire = gestionnaire;
+            Arbitre = new Arbitre(Plateau);
         }
-        
+
         public bool ExecuterCoup(Coup coup)
         {
             Boolean coupValide ;
             if (EstpieceJoueurActuel(coup))
             {
                 coupValide = Plateau.EstCoupValide(coup);
-                if (!coupValide){
+                if (!coupValide)
+                {
                     AfficherMessageErreur("Le coup joué est un coup invalide");
                 }
-            } 
-            else
+            } else
             {
                 AfficherMessageErreur("La pièce ne correspond pas au joueur actuel.");
                 coupValide = false;
-                
             }
 
             if (coupValide)
             {
                 bool estCapture = Plateau.VerifierCapture(coup);
                 Plateau.AppliquerCoup(coup);
-                
+
                 if (estCapture)
                 {
                     Compteur50Coups = 0;
                     if (JoueurActuel == JoueurBlanc)
                     {
                         PointBlanc += 1; // Mise à jour des points pour le joueur blanc
-                    }
-                    else if (JoueurActuel == JoueurNoir)
+                    } else if (JoueurActuel == JoueurNoir)
                     {
                         PointNoir += 1; // Mise à jour des points pour le joueur noir
                     }
-                }
-                else
+                } else
                 {
                     Compteur50Coups++;
                 }
-                
+
                 HistoriqueCoup.Add(coup);
+
+                // Détection mat/pat sur le prochain joueur
+                bool prochainJoueurEstBlanc = (JoueurActuel == JoueurBlanc) ? false : true;
+
+                if (Arbitre.EstEchecEtMat(prochainJoueurEstBlanc))
+                {
+                    // => Échec et mat
+                    AfficherMessageErreur("Échec et mat");
+                    EstTermine = true;
+                    return true;
+                } else if (Arbitre.EstPat(prochainJoueurEstBlanc))
+                {
+                    // => Pat
+                    AfficherMessageErreur("Pat - Partie nulle");
+                    EstTermine = true;
+                    return true;
+                }
                 ChangerTour();
                 EstNulle();
                 HistoriquePlateau.Add(Plateau.ToString());
-                
+
                 return true;
             }
-            
+
             return false;
         }
 
@@ -116,7 +133,7 @@ namespace Chess.Modèles
 
             return true; // Coup valide
         }
-        
+
         public void ChangerTour()
         {
             // Alterner JoueurActuel entre JoueurBlanc et JoueurNoir.
@@ -130,7 +147,6 @@ namespace Chess.Modèles
                 JoueurActuel = JoueurBlanc;
                 AfficherMessage("Tour du joueur blanc");
             }
-
         }
 
         public bool AbandonnerPartie(int joueurID)
@@ -139,16 +155,14 @@ namespace Chess.Modèles
             if (JoueurBlanc.JoueurID == joueurID)
             {
                 // Le joueur blanc abandonne
-                PointBlanc = 0;   
-                PointNoir += 1;      
-            }
-            else if (JoueurNoir.JoueurID == joueurID)
+                PointBlanc = 0;
+                PointNoir += 1;
+            } else if (JoueurNoir.JoueurID == joueurID)
             {
                 // Le joueur noir abandonne
-                PointNoir = 0;      
-                PointBlanc += 1;    
-            }
-            else
+                PointNoir = 0;
+                PointBlanc += 1;
+            } else
             {
                 // L'ID du joueur n'est pas valide
                 MessageBox.Show(
@@ -157,17 +171,14 @@ namespace Chess.Modèles
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
-                return false; 
-
+                return false;
             }
-            
+
             EstTermine = true;
-            
             TerminerPartie();
-            
             return true;
         }
-        
+
         public void DemanderNulle()
         {
             // Donner un point à chaque joueur
@@ -180,7 +191,7 @@ namespace Chess.Modèles
             // Exécuter la logique de fin de partie
             TerminerPartie();
         }
-        
+
         public bool Regle50Coups()
         {
             if (Compteur50Coups >= 50)
@@ -189,22 +200,22 @@ namespace Chess.Modèles
             }
             return Compteur50Coups >= 50;
         }
-        
+
         public bool NulleParBoucle()
         {
             string etatActuel = Plateau.ToString();
 
             // Vérifier si l'état actuel du plateau existe déjà dans l'historique
             int repetitionCount = HistoriquePlateau.Count(chaine => chaine.Equals(etatActuel));
-            return repetitionCount >= 2; 
+            return repetitionCount >= 2;
         }
-        
+
         public void EstNulle()
         {
             bool estNulle = Regle50Coups() || NulleParBoucle();
             if (NulleParBoucle())
             {
-                AfficherMessage("Nulle par répétition d'un m^me plateau");
+                AfficherMessage("Nulle par répétition d'un même plateau");
             }
             if (estNulle)
             {
@@ -220,7 +231,6 @@ namespace Chess.Modèles
             }
         }
 
-       
         public void TerminerPartie()
         {
             if (!EstTermine)
@@ -233,23 +243,21 @@ namespace Chess.Modèles
             if (PointBlanc > PointNoir)
             {
                 // Victoire Blanc, Défaite Noir
-               
-                gestionnaire.AjusterScore(JoueurBlanc.JoueurID, 1, 0 , 0, PointBlanc);
-                gestionnaire.AjusterScore(JoueurNoir.JoueurID,0, 1, 0, PointNoir);
-            }
-            else if (PointBlanc == PointNoir)
+
+                gestionnaire.AjusterScore(JoueurBlanc.JoueurID, 1, 0, 0, PointBlanc);
+                gestionnaire.AjusterScore(JoueurNoir.JoueurID, 0, 1, 0, PointNoir);
+            } else if (PointBlanc == PointNoir)
             {
                 // Partie Nulle
-                gestionnaire.AjusterScore(JoueurBlanc.JoueurID, 0, 0 , 1, PointBlanc);
-                gestionnaire.AjusterScore(JoueurNoir.JoueurID,0, 0, 1, PointNoir);
-            }
-            else
+                gestionnaire.AjusterScore(JoueurBlanc.JoueurID, 0, 0, 1, PointBlanc);
+                gestionnaire.AjusterScore(JoueurNoir.JoueurID, 0, 0, 1, PointNoir);
+            } else
             {
                 // Victoire Noir, Défaite Blanc
-                gestionnaire.AjusterScore(JoueurBlanc.JoueurID, 0, 1 , 0, PointBlanc);
-                gestionnaire.AjusterScore(JoueurNoir.JoueurID,1, 0, 0, PointNoir);
+                gestionnaire.AjusterScore(JoueurBlanc.JoueurID, 0, 1, 0, PointBlanc);
+                gestionnaire.AjusterScore(JoueurNoir.JoueurID, 1, 0, 0, PointNoir);
             }
-            
+
             gestionnaire.AjusterClassement();
             Console.WriteLine("Les scores ont été mis à jour.");
             gestionnaire.GererFinPartie();
@@ -278,7 +286,7 @@ namespace Chess.Modèles
         {
             return ID.GetHashCode();
         }
-        
+
         public void AfficherMessageErreur(String message)
         {
             gestionnaire.AfficherMessageErreur(message);

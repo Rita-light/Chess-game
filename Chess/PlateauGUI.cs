@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
 
 
 namespace Chess
@@ -12,7 +10,7 @@ namespace Chess
         private FenetrePrincipale fenetrePrincipale;
         private int partieID;
         Graphics myGraph;
-        int CaseSourceX = -1; 
+        int CaseSourceX = -1;
         int CaseSourceY = -1;
         private bool interactionsPermises = true;
         public PlateauGUI(FenetrePrincipale fenetrePrincipale, int partieID)
@@ -20,14 +18,14 @@ namespace Chess
             InitializeComponent();
             this.fenetrePrincipale = fenetrePrincipale;
             this.partieID = partieID;
-            
+
         }
-        
+
         public int PartieID
         {
             get { return partieID; }
         }
-        
+
         private void pnlEchequier_Paint(object sender, PaintEventArgs e)
         {
 
@@ -39,31 +37,31 @@ namespace Chess
             // Dessine l'échiquier...
             myGraph.DrawRectangle(new Pen(Color.Chocolate), 0, 0, sizeW, sizeH);
             for (int c = 0; c < 8; c++)
-            for (int r = c % 2 == 0 ? 1 : 0; r < 8; r += 2)
-                myGraph.FillRectangle(myBrush, r * sizeW/8, c *sizeH/8,sizeW/8, sizeH/8);
+                for (int r = c % 2 == 0 ? 1 : 0; r < 8; r += 2)
+                    myGraph.FillRectangle(myBrush, r * sizeW / 8, c * sizeH / 8, sizeW / 8, sizeH / 8);
 
         }
-        
+
         private void PlateauGUI_Load(object sender, EventArgs e)
         {
             var (nomBlanc, nomNoir) = fenetrePrincipale.ObtenirNomJoueur();
-            
+
             lblNomBlanc.Text = $@"{nomBlanc}";
             lblJoueurNoir.Text = $@"{nomNoir}";
         }
-        
+
         private void AfficherPieces(Graphics graphics, string plateauString, int tailleX, int tailleY)
         {
             char[] piece = plateauString.ToCharArray();
-            
+
             for (int ligne = 0; ligne < 8; ligne++)
             {
                 for (int colonne = 0; colonne < 8; colonne++)
                 {
-                    char symbole = piece[colonne * 8 + ligne]; 
-                    if (symbole == '-') continue; 
+                    char symbole = piece[colonne * 8 + ligne];
+                    if (symbole == '-') continue;
 
-                    Bitmap imagePiece = GetImagePiece(symbole); 
+                    Bitmap imagePiece = GetImagePiece(symbole);
                     if (imagePiece != null)
                     {
                         imagePiece.MakeTransparent(imagePiece.GetPixel(1, 1));
@@ -72,14 +70,14 @@ namespace Chess
                 }
             }
         }
-        
+
         private Bitmap GetImagePiece(char symbole)
         {
             switch (symbole)
             {
                 case 'p':
-                    return  new Bitmap("pionn.bmp");
-                    
+                    return new Bitmap("pionn.bmp");
+
                 case 'P':
                     return new Bitmap("pionb.bmp");
                 case 't':
@@ -101,7 +99,7 @@ namespace Chess
                 case 'r':
                     return new Bitmap("roin.bmp");
                 case 'R':
-                     return new Bitmap("roib.bmp");
+                    return new Bitmap("roib.bmp");
             }
 
             return null;
@@ -110,11 +108,11 @@ namespace Chess
         private void btnDemarrerPartie_Click(object sender, EventArgs e)
         {
             //throw new System.NotImplementedException();
-            AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(partieID), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
+            AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(partieID), pnlEchiquier.Width / 8, pnlEchiquier.Height / 8);
             btnDemarrerPartie.Enabled = false;
             AfficherMessage("Tour du joueur Blanc");
         }
-        
+
         private void pnlEchiquier_MouseClick(object sender, MouseEventArgs e)
         {
             // Calculer la taille d'une case en fonction de la taille du plateau
@@ -128,54 +126,53 @@ namespace Chess
             if (btnDemarrerPartie.Enabled == false && interactionsPermises)
             {
                 // S'il s'agit de la même case de départ...
-                if ((this.CaseSourceX == caseX) && (this.CaseSourceY == caseY))
+                if ((CaseSourceX == caseX) && (CaseSourceY == caseY))
                 {
-                    myGraph.DrawRectangle(new Pen(Color.Chocolate, 2), this.CaseSourceX * tailleX, this.CaseSourceY * tailleY, tailleX, tailleY);
-                    this.CaseSourceX = this.CaseSourceY = -1;
+                    myGraph.DrawRectangle(new Pen(Color.Chocolate, 2), CaseSourceX * tailleX, CaseSourceY * tailleY, tailleX, tailleY);
+                    CaseSourceX = CaseSourceY = -1;
                 }
                 // S'il n'y a pas de case départ sélectionnée...
-                else if ((this.CaseSourceX == -1) && (this.CaseSourceY == -1))
+                else if ((CaseSourceX == -1) && (CaseSourceY == -1))
                 {
-                    this.CaseSourceX = caseX;
-                    this.CaseSourceY = caseY;
-                    myGraph.DrawRectangle(new Pen(Color.DarkGreen, 2), this.CaseSourceX * tailleX, this.CaseSourceY * tailleY, tailleX, tailleY);
+                    CaseSourceX = caseX;
+                    CaseSourceY = caseY;
+                    myGraph.DrawRectangle(new Pen(Color.DarkGreen, 2), CaseSourceX * tailleX, CaseSourceY * tailleY, tailleX, tailleY);
                 }
                 // S'il s'agit de la case destination...
                 else
                 {
-                    myGraph.DrawRectangle(new Pen(Color.Chocolate, 2), this.CaseSourceX * tailleX, this.CaseSourceY * tailleY, tailleX, tailleY);
-                
+                    myGraph.DrawRectangle(new Pen(Color.Chocolate, 2), CaseSourceX * tailleX, CaseSourceY * tailleY, tailleX, tailleY);
+
                     //Code pour jouer coup......
-                
+
                     Boolean coupAppliquer = fenetrePrincipale.jouerCoup(CaseSourceX, CaseSourceY, caseX, caseY, partieID);
                     Console.WriteLine($@"{coupAppliquer}");
 
                     if (coupAppliquer)
-                    {   
+                    {
                         MettreAJourPlateau();
-                    }
-                    else
+                    } else
                     {
                         Console.WriteLine("Erreur");
                     }
                     System.Threading.Thread.Sleep(1000);
-                
-                    this.CaseSourceX = this.CaseSourceY = -1;
+
+                    CaseSourceX = CaseSourceY = -1;
                 }
             }
-           
+
         }
-        
+
         public void MettreAJourPlateau()
         {
             pnlEchiquier.Refresh();
 
-            AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(partieID), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
+            AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(partieID), pnlEchiquier.Width / 8, pnlEchiquier.Height / 8);
             var (pointBlanc, pointNoir) = fenetrePrincipale.ObtenirPoint();
             lblPointBlanc.Text = $@"{pointBlanc}";
             lblPointNoir.Text = $@"{pointNoir}";
         }
-        
+
         public void AfficherMessageErreur(string message)
         {
             // Mettre à jour le texte du label avec le message d'erreur
@@ -183,7 +180,7 @@ namespace Chess
             // Vous pouvez aussi personnaliser la couleur ou d'autres propriétés si nécessaire
             lblTxt.ForeColor = Color.Red;  // Exemple : afficher le texte en rouge
         }
-        
+
         public void AfficherMessage(string message)
         {
             // Mettre à jour le texte du label avec le message d'erreur
@@ -191,7 +188,7 @@ namespace Chess
             // Vous pouvez aussi personnaliser la couleur ou d'autres propriétés si nécessaire
             lblTxt.ForeColor = Color.MidnightBlue;  // Exemple : afficher le texte en rouge
         }
-        
+
         private void btnAbandon_Click(object sender, EventArgs a)
         {
             // Afficher une boîte de dialogue pour demander l'ID du joueur
@@ -200,7 +197,7 @@ namespace Chess
             // Vérifier si l'utilisateur a fourni un ID valide
             if (!string.IsNullOrEmpty(input) && int.TryParse(input, out int joueurID))
             {
-                
+
                 var confirmation = MessageBox.Show(
                     $"Le joueur avec l'ID {joueurID} va abandonner. Confirmez-vous ?",
                     "Confirmation Abandon",
@@ -213,21 +210,19 @@ namespace Chess
                     bool fermer = fenetrePrincipale.AbandonnerPartie(joueurID, partieID);
                     if (fermer)
                     {
-                        this.Close();
+                        Close();
                     }
-                }
-                else
+                } else
                 {
                     MessageBox.Show("Abandon annulé.", "Action Annulée", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-            }
-            else
+            } else
             {
                 // Si l'ID est invalide ou si aucune entrée n'a été fournie
                 MessageBox.Show("ID invalide ou abandon annulé.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
+
         public string DemanderIDJoueur()
         {
             // Créer une fenêtre de dialogue personnalisée
@@ -285,10 +280,10 @@ namespace Chess
 
             if (result == DialogResult.OK)
             {
-                return inputBox.Text; 
+                return inputBox.Text;
             }
 
-            return null; 
+            return null;
         }
 
         private void btnNulle_Click(object sender, EventArgs e)
@@ -305,8 +300,7 @@ namespace Chess
             {
                 // Transmettre la demande à FenetrePrincipale
                 fenetrePrincipale.DemanderNulle(partieID);
-            }
-            else
+            } else
             {
                 MessageBox.Show(
                     "Demande de nulle annulée.",
@@ -316,7 +310,7 @@ namespace Chess
                 );
             }
         }
-        
+
         public void GererFinPartie()
         {
             // Désactiver la capacité à cliquer sur le plateau
@@ -334,9 +328,9 @@ namespace Chess
             if (result == DialogResult.Yes)
             {
                 // Fermer le plateau
-                this.Close();
+                Close();
             }
-            
+
         }
     }
 

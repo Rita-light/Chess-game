@@ -14,6 +14,7 @@ namespace Chess
             // Instanciation du contrôleur et démarrage de l'application
             var jeuController = new JeuController();
             jeuController.DemarrerApplication();
+
         }
     }
 }

@@ -67,7 +67,7 @@ namespace Chess.Modèles
 
         /// <summary>
         /// Vérifie si un coup est valide selon la logique de déplacement de chaque pièce 
-        /// et les règles spéciales (roque, en passant...). Ne gère pas l'échec pour l'instant.
+        /// et les règles spéciales (roque, en passant...).
         /// </summary>
         public bool EstCoupValide(Coup coup)
         {
@@ -88,7 +88,7 @@ namespace Chess.Modèles
             }
             return piece.IsWhite;
         }
-        
+
         /// <summary>
         /// verifie si il y a eure une capture
         /// </summary>
@@ -136,7 +136,7 @@ namespace Chess.Modèles
         {
             Piece pieceDepart = GetPiece(coup.Depart);
             if (pieceDepart == null)
-                throw new InvalidOperationException("Aucune pièce à déplacer.");
+                throw new InvalidOperationException($"Aucune pièce à déplacer depuis {coup.Depart}.");
 
             // Mise à jour de la position de la pièce
             pieceDepart.SetPosition(coup.Destination);

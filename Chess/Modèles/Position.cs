@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Chess.Modèles
+﻿namespace Chess.Modèles
 {
     public class Position
     {
@@ -9,10 +7,6 @@ namespace Chess.Modèles
 
         public Position(int x, int y)
         {
-            if (x < 0 || x > 7)
-                throw new ArgumentOutOfRangeException(nameof(x), "X doit être entre 0 et 7.");
-            if (y < 0 || y > 7)
-                throw new ArgumentOutOfRangeException(nameof(y), "Y doit être entre 0 et 7.");
             X = x;
             Y = y;
         }
