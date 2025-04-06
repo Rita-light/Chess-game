@@ -41,6 +41,42 @@ namespace Chess.Modèles.Pièces
             return attaques;
         }
 
+        public override HashSet<Position> ObtenirDestinationsPotentielles(Plateau plateau)
+        {
+            HashSet<Position> destinations = new HashSet<Position>();
+            int[] directionsX = { 1, 1, -1, -1 };
+            int[] directionsY = { 1, -1, 1, -1 };
+
+            for (int d = 0; d < 4; d++)
+            {
+                int currentX = Position.X;
+                int currentY = Position.Y;
+                while (true)
+                {
+                    currentX += directionsX[d];
+                    currentY += directionsY[d];
+                    Position posActuelle = new Position(currentX, currentY);
+
+                    if (!plateau.EstPositionValide(posActuelle))
+                        break;
+
+                    Piece pieceSurCase = plateau.GetPiece(posActuelle);
+
+                    if (pieceSurCase == null)
+                    {
+                        destinations.Add(posActuelle);
+                    } else
+                    {
+                        if (pieceSurCase.IsWhite != IsWhite)
+                        {
+                            destinations.Add(posActuelle);
+                        }
+                        break;
+                    }
+                }
+            }
+            return destinations;
+        }
 
         //-------------------------------------------------------------------------
         // Overrides

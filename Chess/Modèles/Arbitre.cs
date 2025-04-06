@@ -56,16 +56,69 @@ namespace Chess.Modèles
                     return false;
             }
 
-
             // Vérification spécifique à la capture d'un pion (en passant inclus)
             if (!ValiderCapturePion(coup, pieceDepart, pieceDestination))
                 return false;
 
             if (SimulerCoupEtVerifierEchec(coup, pieceDepart, pieceDestination))
                 return false;
-            
+
             return true;
         }
+
+        public bool EstEchecEtMat(bool pourLesBlancs)
+        {
+            bool echec = Plateau.EstEnEchec(pourLesBlancs);
+            if (!echec) return false;
+
+            // S’il y a un échec, on regarde si on peut s’en sortir
+            List<Coup> coupsLegaux = ObtenirCoupsLegaux(pourLesBlancs);
+            return (coupsLegaux.Count == 0);
+        }
+
+        public bool EstPat(bool pourLesBlancs)
+        {
+            bool echec = Plateau.EstEnEchec(pourLesBlancs);
+            if (echec) return false;
+
+            // S’il n’y a pas d’échec, on regarde si on peut jouer
+            List<Coup> coupsLegaux = ObtenirCoupsLegaux(pourLesBlancs);
+            return (coupsLegaux.Count == 0);
+        }
+
+
+        public List<Coup> ObtenirCoupsLegaux(bool pourLesBlancs)
+        {
+            List<Coup> coupsLegaux = new List<Coup>();
+
+            for (int x = 0; x < 8; x++)
+            {
+                for (int y = 0; y < 8; y++)
+                {
+                    Position depart = new Position(x, y);
+                    Piece piece = Plateau.GetPiece(depart);
+
+                    // Vérifier si c’est bien une piece de la couleur recherchée
+                    if (piece != null && piece.IsWhite == pourLesBlancs)
+                    {
+                        // Récupérer ses destinations potentielles (implémentées dans chaque sous-classe)
+                        HashSet<Position> destinations = piece.ObtenirDestinationsPotentielles(Plateau);
+
+                        foreach (Position destination in destinations)
+                        {
+                            Coup coupPotentiel = new Coup(depart, destination);
+                            if (EstCoupValide(coupPotentiel))
+                            {
+                                coupsLegaux.Add(coupPotentiel);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return coupsLegaux;
+        }
+
 
         public void TraiterCoupSpecial(Coup coup, Piece pieceDepart)
         {
