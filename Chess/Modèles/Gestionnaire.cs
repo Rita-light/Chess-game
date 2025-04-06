@@ -202,6 +202,15 @@ namespace Chess.Modèles
             {
                 // Appeler la méthode AjusterScore de la classe Score
                 scoreJoueur.AjusterScore(scoreJoueur.Joueur ,victoire, defaite, partNull, point);
+                var joueur = listJoueurs.FirstOrDefault(j => j.JoueurID == joueurID);
+                if (joueur != null)
+                {
+                    joueur.Victoire += victoire;
+                    joueur.Defaite += defaite;
+                    joueur.PartNulle += partNull;
+                    Console.WriteLine($"Le score du joueur {joueurID} a été mis à jour dans la liste des joueurs.");
+                }
+                
             }
             else
             {
@@ -217,7 +226,13 @@ namespace Chess.Modèles
             // Mettre à jour le classement de chaque joueur
             for (int i = 0; i < scoresTries.Count; i++)
             {
-                scoresTries[i].Joueur.Classement = i + 1; // Classement commence à 1
+                scoresTries[i].Joueur.Classement = i + 1; 
+                
+                var joueur = listJoueurs.FirstOrDefault(j => j.JoueurID == scoresTries[i].Joueur.JoueurID);
+                if (joueur != null)
+                {
+                    joueur.Classement = i + 1;
+                }
             }
 
             Console.WriteLine("Le classement a été mis à jour.");
@@ -234,16 +249,20 @@ namespace Chess.Modèles
             return false;
         }
         
-        public bool DemanderNulle(int partieID)
+        public void DemanderNulle(int partieID)
         {
             partieActuelle = ObtenirPartieParId(partieID);
             if (partieActuelle != null)
             {
-                return partieActuelle.DemanderNulle();
+                 partieActuelle.DemanderNulle();
             }
-
-            return false;
             
+        }
+        
+        public void GererFinPartie()
+        {
+            // Relayer l'information au contrôleur
+            controller.GererFinPartie();
         }
 
     }

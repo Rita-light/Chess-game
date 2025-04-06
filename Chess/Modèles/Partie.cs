@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -18,6 +19,8 @@ namespace Chess.Modèles
         public bool EstTermine { get; set; }
         public int PointBlanc { get; private set; }
         public int PointNoir { get; private set; }
+        public int Compteur50Coups { get; private set; } = 0;
+        public List<string> HistoriquePlateau { get; private set; } = new List<string>();
 
         public Partie(Joueur joueurBlanc, Joueur joueurNoir, Gestionnaire gestionnaire)
         {
@@ -62,6 +65,7 @@ namespace Chess.Modèles
                 
                 if (estCapture)
                 {
+                    Compteur50Coups = 0;
                     if (JoueurActuel == JoueurBlanc)
                     {
                         PointBlanc += 1; // Mise à jour des points pour le joueur blanc
@@ -71,9 +75,16 @@ namespace Chess.Modèles
                         PointNoir += 1; // Mise à jour des points pour le joueur noir
                     }
                 }
+                else
+                {
+                    Compteur50Coups++;
+                }
                 
                 HistoriqueCoup.Add(coup);
                 ChangerTour();
+                EstNulle();
+                HistoriquePlateau.Add(Plateau.ToString());
+                
                 return true;
             }
             
@@ -157,7 +168,7 @@ namespace Chess.Modèles
             return true;
         }
         
-        public bool DemanderNulle()
+        public void DemanderNulle()
         {
             // Donner un point à chaque joueur
             PointBlanc = 1;
@@ -168,13 +179,45 @@ namespace Chess.Modèles
 
             // Exécuter la logique de fin de partie
             TerminerPartie();
-            return true;
+        }
+        
+        public bool Regle50Coups()
+        {
+            if (Compteur50Coups >= 50)
+            {
+                AfficherMessage("Nulle par règle de 50 coups");
+            }
+            return Compteur50Coups >= 50;
+        }
+        
+        public bool NulleParBoucle()
+        {
+            string etatActuel = Plateau.ToString();
+
+            // Vérifier si l'état actuel du plateau existe déjà dans l'historique
+            int repetitionCount = HistoriquePlateau.Count(chaine => chaine.Equals(etatActuel));
+            return repetitionCount >= 2; 
         }
         
         public void EstNulle()
         {
-            throw new System.NotImplementedException();
-            // TODO: Implémenter la vérification des conditions de match nul.
+            bool estNulle = Regle50Coups() || NulleParBoucle();
+            if (NulleParBoucle())
+            {
+                AfficherMessage("Nulle par répétition d'un m^me plateau");
+            }
+            if (estNulle)
+            {
+                // Donner un point à chaque joueur
+                PointBlanc = 1;
+                PointNoir = 1;
+
+                // Marquer la partie comme terminée
+                EstTermine = true;
+
+                // Exécuter la logique de fin de partie
+                TerminerPartie();
+            }
         }
 
        
@@ -209,6 +252,7 @@ namespace Chess.Modèles
             
             gestionnaire.AjusterClassement();
             Console.WriteLine("Les scores ont été mis à jour.");
+            gestionnaire.GererFinPartie();
         }
 
 

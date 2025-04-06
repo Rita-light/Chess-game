@@ -83,9 +83,9 @@ namespace Chess.Controlleurs
             return gestionnaire.AbandonnerPartie(joueurID, partieID);
         }
         
-        public bool DemanderNulle(int partieID)
+        public void DemanderNulle(int partieID)
         {
-            return gestionnaire.DemanderNulle(partieID);
+             gestionnaire.DemanderNulle(partieID);
         }
         
         public void QuitterProgramme()
@@ -95,6 +95,12 @@ namespace Chess.Controlleurs
 
             // Indiquer que le contrôleur a fini de gérer la fermeture
             MessageBox.Show("Toutes les interfaces ont été fermées.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        
+        public void GererFinPartie()
+        {
+            // Informer FenetrePrincipale de la fin de la partie
+            fenetrePrincipale.GererFinPartie();
         }
 
     }

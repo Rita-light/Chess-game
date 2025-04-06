@@ -14,6 +14,7 @@ namespace Chess
         Graphics myGraph;
         int CaseSourceX = -1; 
         int CaseSourceY = -1;
+        private bool interactionsPermises = true;
         public PlateauGUI(FenetrePrincipale fenetrePrincipale, int partieID)
         {
             InitializeComponent();
@@ -124,7 +125,7 @@ namespace Chess
             int caseX = e.X / tailleX;
             int caseY = e.Y / tailleY;
 
-            if (btnDemarrerPartie.Enabled == false)
+            if (btnDemarrerPartie.Enabled == false && interactionsPermises)
             {
                 // S'il s'agit de la même case de départ...
                 if ((this.CaseSourceX == caseX) && (this.CaseSourceY == caseY))
@@ -151,7 +152,6 @@ namespace Chess
 
                     if (coupAppliquer)
                     {   
-                        pnlEchiquier.Refresh();
                         MettreAJourPlateau();
                     }
                     else
@@ -168,6 +168,8 @@ namespace Chess
         
         public void MettreAJourPlateau()
         {
+            pnlEchiquier.Refresh();
+
             AfficherPieces(myGraph, fenetrePrincipale.ObtenirPlateauActuel(partieID), pnlEchiquier.Width/8, pnlEchiquier.Height/8);
             var (pointBlanc, pointNoir) = fenetrePrincipale.ObtenirPoint();
             lblPointBlanc.Text = $@"{pointBlanc}";
@@ -302,11 +304,7 @@ namespace Chess
             if (confirmation == DialogResult.Yes)
             {
                 // Transmettre la demande à FenetrePrincipale
-                bool fermer = fenetrePrincipale.DemanderNulle(partieID);
-                if (fermer)
-                {
-                    this.Close();
-                }
+                fenetrePrincipale.DemanderNulle(partieID);
             }
             else
             {
@@ -317,6 +315,28 @@ namespace Chess
                     MessageBoxIcon.Information
                 );
             }
+        }
+        
+        public void GererFinPartie()
+        {
+            // Désactiver la capacité à cliquer sur le plateau
+            interactionsPermises = false;
+            MettreAJourPlateau();
+
+            // Demander à l'utilisateur ce qu'il souhaite faire
+            DialogResult result = MessageBox.Show(
+                "La partie est terminée. Voulez-vous fermer le plateau ?",
+                "Fin de Partie",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                // Fermer le plateau
+                this.Close();
+            }
+            
         }
     }
 

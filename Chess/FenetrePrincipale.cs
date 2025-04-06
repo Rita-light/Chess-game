@@ -160,13 +160,25 @@ namespace Chess
             return controller.AbandonnerPartie(joeurID, partieID);
         }
         
-        public bool DemanderNulle(int partieID)
+        public void DemanderNulle(int partieID)
         {
-            return controller.DemanderNulle(partieID);
+             controller.DemanderNulle(partieID);
         }
         private void button4_Click(object sender, EventArgs e)
         {
             QuitterProgramme();
+        }
+        
+        public void GererFinPartie()
+        {
+            // Demander à Plateau de gérer la fin de partie
+
+            int indexPlateau = TrouverIndexPlateauParPartieID(ObtenirIdPartie());
+            if (indexPlateau >= 0 && indexPlateau < listePlateaux.Count)
+            {
+                listePlateaux[indexPlateau].GererFinPartie();
+            }
+            
         }
     }
     
