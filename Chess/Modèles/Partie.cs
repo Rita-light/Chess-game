@@ -54,9 +54,10 @@ namespace Chess.Modèles
                 {
                     AfficherMessageErreur("Le coup joué est un coup invalide");
                 }
-            } else
+            } 
+            else
             {
-                AfficherMessageErreur("La pièce ne correspond pas au joueur actuel.");
+                AfficherMessageErreur("La pièce n'est pas au joueur actuel.");
                 coupValide = false;
             }
 
@@ -67,11 +68,12 @@ namespace Chess.Modèles
 
                 if (estCapture)
                 {
+                    AfficherMessage("Capture de la pièce adverse");
                     Compteur50Coups = 0;
-                    if (JoueurActuel == JoueurBlanc)
+                    if (JoueurActuel.Equals( JoueurBlanc))
                     {
                         PointBlanc += 1; // Mise à jour des points pour le joueur blanc
-                    } else if (JoueurActuel == JoueurNoir)
+                    } else if (JoueurActuel.Equals( JoueurNoir))
                     {
                         PointNoir += 1; // Mise à jour des points pour le joueur noir
                     }
@@ -83,7 +85,7 @@ namespace Chess.Modèles
                 HistoriqueCoup.Add(coup);
 
                 // Détection mat/pat sur le prochain joueur
-                bool prochainJoueurEstBlanc = (JoueurActuel == JoueurBlanc) ? false : true;
+                bool prochainJoueurEstBlanc = (JoueurActuel.Equals( JoueurBlanc)) ? false : true;
 
                 if (Arbitre.EstEchecEtMat(prochainJoueurEstBlanc))
                 {

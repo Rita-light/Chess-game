@@ -190,7 +190,7 @@ namespace Chess.Modèles
             SauvegarderTout();
 
             // Signaler que le gestionnaire a terminé
-            MessageBox.Show("Données sauvegardées. Le programme peut maintenant être fermé.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Console.WriteLine("Données sauvegardées. Le programme peut maintenant être fermé.");
         }
 
         public void AjusterScore(int joueurID, int victoire, int defaite, int partNull, int point)
@@ -208,7 +208,6 @@ namespace Chess.Modèles
                     joueur.Victoire += victoire;
                     joueur.Defaite += defaite;
                     joueur.PartNulle += partNull;
-                    Console.WriteLine($"Le score du joueur {joueurID} a été mis à jour dans la liste des joueurs.");
                 }
 
             } else
@@ -237,15 +236,14 @@ namespace Chess.Modèles
             Console.WriteLine("Le classement a été mis à jour.");
         }
 
-        public bool AbandonnerPartie(int joueurID, int partieID)
+        public void AbandonnerPartie(int joueurID, int partieID)
         {
             partieActuelle = ObtenirPartieParId(partieID);
             if (partieActuelle != null)
             {
-                return partieActuelle.AbandonnerPartie(joueurID);
+                partieActuelle.AbandonnerPartie(joueurID);
             }
 
-            return false;
         }
 
         public void DemanderNulle(int partieID)

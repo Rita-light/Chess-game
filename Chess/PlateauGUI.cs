@@ -13,6 +13,7 @@ namespace Chess
         int CaseSourceX = -1;
         int CaseSourceY = -1;
         private bool interactionsPermises = true;
+        bool peutFermer = false;
         public PlateauGUI(FenetrePrincipale fenetrePrincipale, int partieID)
         {
             InitializeComponent();
@@ -50,6 +51,13 @@ namespace Chess
             lblJoueurNoir.Text = $@"{nomNoir}";
         }
 
+        /// <summary>
+        /// Permet d'afficher les pièces sur le plateau
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="plateauString"></param>
+        /// <param name="tailleX"></param>
+        /// <param name="tailleY"></param>
         private void AfficherPieces(Graphics graphics, string plateauString, int tailleX, int tailleY)
         {
             char[] piece = plateauString.ToCharArray();
@@ -113,6 +121,11 @@ namespace Chess
             AfficherMessage("Tour du joueur Blanc");
         }
 
+        /// <summary>
+        /// S'exécute losqu'on clique une case du plateau
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pnlEchiquier_MouseClick(object sender, MouseEventArgs e)
         {
             // Calculer la taille d'une case en fonction de la taille du plateau
@@ -129,6 +142,7 @@ namespace Chess
                 if ((CaseSourceX == caseX) && (CaseSourceY == caseY))
                 {
                     myGraph.DrawRectangle(new Pen(Color.Chocolate, 2), CaseSourceX * tailleX, CaseSourceY * tailleY, tailleX, tailleY);
+                    AfficherMessageErreur("vous avez cliquer la même case");
                     CaseSourceX = CaseSourceY = -1;
                 }
                 // S'il n'y a pas de case départ sélectionnée...
@@ -146,23 +160,22 @@ namespace Chess
                     //Code pour jouer coup......
 
                     Boolean coupAppliquer = fenetrePrincipale.jouerCoup(CaseSourceX, CaseSourceY, caseX, caseY, partieID);
-                    Console.WriteLine($@"{coupAppliquer}");
+                    Console.WriteLine($@"Coup appliqué : {coupAppliquer}");
 
                     if (coupAppliquer)
                     {
                         MettreAJourPlateau();
-                    } else
-                    {
-                        Console.WriteLine("Erreur");
-                    }
-                    System.Threading.Thread.Sleep(1000);
-
+                    } 
+                    
                     CaseSourceX = CaseSourceY = -1;
                 }
             }
 
         }
 
+        /// <summary>
+        /// Met le plateau à jour
+        /// </summary>
         public void MettreAJourPlateau()
         {
             pnlEchiquier.Refresh();
@@ -189,6 +202,12 @@ namespace Chess
             lblTxt.ForeColor = Color.MidnightBlue;  // Exemple : afficher le texte en rouge
         }
 
+        /// <summary>
+        /// S'excécute quand on demande l'abandon du jeu
+        /// Demande l'ID du joeur qui anandonne et exécute l'abando de la partie
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="a"></param>
         private void btnAbandon_Click(object sender, EventArgs a)
         {
             // Afficher une boîte de dialogue pour demander l'ID du joueur
@@ -207,12 +226,9 @@ namespace Chess
 
                 if (confirmation == DialogResult.Yes)
                 {
-                    bool fermer = fenetrePrincipale.AbandonnerPartie(joueurID, partieID);
-                    if (fermer)
-                    {
-                        Close();
-                    }
-                } else
+                     fenetrePrincipale.AbandonnerPartie(joueurID, partieID);
+                } 
+                else
                 {
                     MessageBox.Show("Abandon annulé.", "Action Annulée", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -223,6 +239,10 @@ namespace Chess
             }
         }
 
+        /// <summary>
+        /// Crée une fenêre interactive pour demande l'ID du joueur voulant abandoner la partie
+        /// </summary>
+        /// <returns></returns>
         public string DemanderIDJoueur()
         {
             // Créer une fenêtre de dialogue personnalisée
@@ -311,10 +331,15 @@ namespace Chess
             }
         }
 
+        /// <summary>
+        /// Gère la fin d'une partie en demandant si les joueurs veulent fermer le plateau ou le laisser ouvert
+        /// rend le plateau non cliquable
+        /// </summary>
         public void GererFinPartie()
         {
             // Désactiver la capacité à cliquer sur le plateau
             interactionsPermises = false;
+            peutFermer = true;
             MettreAJourPlateau();
 
             // Demander à l'utilisateur ce qu'il souhaite faire
@@ -332,6 +357,16 @@ namespace Chess
             }
 
         }
+        private void PlateauGUI_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!peutFermer)
+            {
+                MessageBox.Show("Vous ne pouvez pas fermer la fenêtre tant que la partie n'est pas terminée.",
+                    "Fermeture interdite", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                e.Cancel = true; // Empêche la fermeture
+            }
+        }
+
     }
 
 }
