@@ -105,6 +105,7 @@ namespace Chess
             this.lblPointBlanc.Name = "lblPointBlanc";
             this.lblPointBlanc.Size = new System.Drawing.Size(0, 17);
             this.lblPointBlanc.TabIndex = 3;
+            this.lblPointBlanc.Text = "0";
             // 
             // label4
             // 
@@ -113,6 +114,7 @@ namespace Chess
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(0, 17);
             this.label4.TabIndex = 2;
+            this.label4.Text = "Point : ";
             // 
             // lblNomBlanc
             // 
@@ -121,6 +123,7 @@ namespace Chess
             this.lblNomBlanc.Name = "lblNomBlanc";
             this.lblNomBlanc.Size = new System.Drawing.Size(0, 17);
             this.lblNomBlanc.TabIndex = 1;
+            this.lblNomBlanc.Text = "Nom";
             // 
             // label2
             // 
@@ -129,6 +132,7 @@ namespace Chess
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(0, 17);
             this.label2.TabIndex = 0;
+            this.label2.Text = "Nom : ";
             // 
             // groupBox2
             // 
@@ -152,6 +156,7 @@ namespace Chess
             this.lblPointNoir.Name = "lblPointNoir";
             this.lblPointNoir.Size = new System.Drawing.Size(0, 17);
             this.lblPointNoir.TabIndex = 3;
+            this.lblPointNoir.Text = "0";
             // 
             // label8
             // 
@@ -160,6 +165,8 @@ namespace Chess
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(0, 17);
             this.label8.TabIndex = 2;
+            this.label8.Text = "Point : ";
+            
             // 
             // lblJoueurNoir
             // 
@@ -168,6 +175,7 @@ namespace Chess
             this.lblJoueurNoir.Name = "lblJoueurNoir";
             this.lblJoueurNoir.Size = new System.Drawing.Size(0, 17);
             this.lblJoueurNoir.TabIndex = 1;
+            this.lblJoueurNoir.Text = "Nom";
             // 
             // label6
             // 
@@ -176,6 +184,7 @@ namespace Chess
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(0, 17);
             this.label6.TabIndex = 0;
+            this.label6.Text = "Nom : ";
             // 
             // groupBox3
             // 
