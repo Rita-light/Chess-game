@@ -78,9 +78,9 @@ namespace Chess.Controlleurs
         {
             fenetrePrincipale.AfficherMessage(message);
         }
-        public bool AbandonnerPartie(int joueurID, int partieID)
+        public void AbandonnerPartie(int joueurID, int partieID)
         {
-            return gestionnaire.AbandonnerPartie(joueurID, partieID);
+             gestionnaire.AbandonnerPartie(joueurID, partieID);
         }
         
         public void DemanderNulle(int partieID)
@@ -92,9 +92,6 @@ namespace Chess.Controlleurs
         {
             // Appeler la méthode dans le Gestionnaire pour vérifier les parties
             gestionnaire.QuitterProgramme();
-
-            // Indiquer que le contrôleur a fini de gérer la fermeture
-            MessageBox.Show("Toutes les interfaces ont été fermées.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         
         public void GererFinPartie()

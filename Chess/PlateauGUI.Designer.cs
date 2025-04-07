@@ -1,4 +1,6 @@
-﻿namespace Chess
+﻿using System.Windows.Forms;
+
+namespace Chess
 {
     partial class PlateauGUI
     {
@@ -101,18 +103,16 @@
             this.lblPointBlanc.AutoSize = true;
             this.lblPointBlanc.Location = new System.Drawing.Point(76, 62);
             this.lblPointBlanc.Name = "lblPointBlanc";
-            this.lblPointBlanc.Size = new System.Drawing.Size(16, 17);
+            this.lblPointBlanc.Size = new System.Drawing.Size(0, 17);
             this.lblPointBlanc.TabIndex = 3;
-            this.lblPointBlanc.Text = "0";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(13, 62);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 17);
+            this.label4.Size = new System.Drawing.Size(0, 17);
             this.label4.TabIndex = 2;
-            this.label4.Text = "Point :";
             // 
             // lblNomBlanc
             // 
@@ -127,9 +127,8 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(13, 32);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 17);
+            this.label2.Size = new System.Drawing.Size(0, 17);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Nom : ";
             // 
             // groupBox2
             // 
@@ -151,18 +150,16 @@
             this.lblPointNoir.AutoSize = true;
             this.lblPointNoir.Location = new System.Drawing.Point(84, 62);
             this.lblPointNoir.Name = "lblPointNoir";
-            this.lblPointNoir.Size = new System.Drawing.Size(16, 17);
+            this.lblPointNoir.Size = new System.Drawing.Size(0, 17);
             this.lblPointNoir.TabIndex = 3;
-            this.lblPointNoir.Text = "0";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(13, 62);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(52, 17);
+            this.label8.Size = new System.Drawing.Size(0, 17);
             this.label8.TabIndex = 2;
-            this.label8.Text = "Point : ";
             // 
             // lblJoueurNoir
             // 
@@ -177,9 +174,8 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(13, 32);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(45, 17);
+            this.label6.Size = new System.Drawing.Size(0, 17);
             this.label6.TabIndex = 0;
-            this.label6.Text = "Nom :";
             // 
             // groupBox3
             // 
@@ -216,6 +212,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(453, 744);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -223,9 +220,9 @@
             this.Controls.Add(this.btnDemarrerPartie);
             this.Controls.Add(this.pnlEchiquier);
             this.Controls.Add(this.lblTxt);
+            this.Location = new System.Drawing.Point(15, 15);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "PlateauGUI";
-            this.Text = "PlateauGUI";
             this.Load += new System.EventHandler(this.PlateauGUI_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

@@ -127,7 +127,7 @@ namespace Chess
         }
 
         
-        private void QuitterProgramme()
+        private void QuitterProgramme(object sender, FormClosingEventArgs e)
             {
                 // Demande de confirmation avant de fermer
                 DialogResult resultat = MessageBox.Show(
@@ -141,10 +141,10 @@ namespace Chess
                 if (resultat == DialogResult.Yes)
                 {          
                     controller.QuitterProgramme();
-                    Application.Exit();
                 }
                 else
                 {
+                    e.Cancel = true;
                     MessageBox.Show("Fermeture annulée.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     // Exécutez votre logique personnalisée ici avant de fermer
                     
@@ -155,9 +155,9 @@ namespace Chess
         {
             return controller.ObtenirPoint();
         }
-        public bool AbandonnerPartie(int joeurID, int partieID)
+        public void AbandonnerPartie(int joeurID, int partieID)
         {
-            return controller.AbandonnerPartie(joeurID, partieID);
+             controller.AbandonnerPartie(joeurID, partieID);
         }
         
         public void DemanderNulle(int partieID)
@@ -166,7 +166,7 @@ namespace Chess
         }
         private void button4_Click(object sender, EventArgs e)
         {
-            QuitterProgramme();
+           this.Close(); 
         }
         
         public void GererFinPartie()

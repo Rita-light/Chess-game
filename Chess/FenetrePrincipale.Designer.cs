@@ -120,6 +120,7 @@ namespace Chess
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.FormClosing += QuitterProgramme;
         }
 
         private System.Windows.Forms.Button btnClosed;

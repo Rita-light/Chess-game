@@ -53,6 +53,7 @@ namespace Chess.Modèles
                 SetPiece(new Position(x, 6), new Pion(true, new Position(x, 6)));
         }
 
+        
         public override string ToString()
         {
             string plateauChaine = "";
@@ -159,6 +160,12 @@ namespace Chess.Modèles
         //-------------------------------------------------------------------------
         // Promotion pièce
         //-------------------------------------------------------------------------
+        /// <summary>
+        /// Vétifie si le pion a ateint une position permettant la promotion
+        /// </summary>
+        /// <param name="piece"></param>
+        /// <param name="position"></param>
+        /// <returns></returns>
         private bool EstEnPromotion(Piece piece, Position position)
         {
             if (piece is Pion)
@@ -171,6 +178,12 @@ namespace Chess.Modèles
             return false;
         }
         
+        /// <summary>
+        /// - Affiche la boite de dialogue pour choisir le type de piece
+        /// - Promouvoit le pion en type de pièce choisi
+        /// </summary>
+        /// <param name="pion"></param>
+        /// <param name="position"></param>
         private void PromouvoirPion(Piece pion, Position position)
         {
             char choix = 'D'; // Par défaut
@@ -208,11 +221,7 @@ namespace Chess.Modèles
             echequier[position.X, position.Y] = piecePromue;
         }
 
-
-
         
-
-
         //-------------------------------------------------------------------------
         // Détection de l'échec
         //-------------------------------------------------------------------------
