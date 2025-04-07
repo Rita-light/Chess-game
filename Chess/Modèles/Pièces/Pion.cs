@@ -5,7 +5,7 @@ namespace Chess.Modèles.Pièces
 {
     public class Pion : Piece
     {
-        public bool HasMoved { get; private set; } = false;
+        public bool HasMoved { get; set; } = false;
 
         public Pion(bool isWhite, Position position) : base(isWhite, position)
         {

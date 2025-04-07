@@ -284,9 +284,6 @@ namespace Chess.Modèles
             }
         }
 
-        /// <summary>
-        /// Réinitialise la case en passant.
-        /// </summary>
         public void ReinitialiserEnPassant()
         {
             EnPassantPosition = null;

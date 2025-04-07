@@ -26,7 +26,6 @@ namespace Chess.Modèles
                 int dx = Math.Abs(coup.Destination.X - coup.Depart.X);
                 int dy = Math.Abs(coup.Destination.Y - coup.Depart.Y);
 
-                // Roque (2 cases horizontales)
                 if (dx == 2 && dy == 0)
                 {
                     Roi roi = (Roi)pieceDepart;
@@ -34,7 +33,6 @@ namespace Chess.Modèles
                         return false;
                 } else
                 {
-                    // Sinon on vérifie que le chemin est libre (1 case ou mouvement normal)
                     if (!Plateau.EstCheminLibre(coup))
                         return false;
                 }
@@ -49,14 +47,11 @@ namespace Chess.Modèles
             if (pieceDepart.Type == TypePiece.Pion)
             {
                 Pion pion = (Pion)pieceDepart;
-                // Si ce n'est pas un mouvement de capture (diagonale),
-                // alors la case destination DOIT être vide.
                 int dx = coup.Destination.X - coup.Depart.X;
                 if (dx == 0 && pieceDestination != null)
                     return false;
             }
 
-            // Vérification spécifique à la capture d'un pion (en passant inclus)
             if (!ValiderCapturePion(coup, pieceDepart, pieceDestination))
                 return false;
 
@@ -101,7 +96,6 @@ namespace Chess.Modèles
                     // Vérifier si c’est bien une piece de la couleur recherchée
                     if (piece != null && piece.IsWhite == pourLesBlancs)
                     {
-                        // Récupérer ses destinations potentielles (implémentées dans chaque sous-classe)
                         HashSet<Position> destinations = piece.ObtenirDestinationsPotentielles(Plateau);
 
                         foreach (Position destination in destinations)
@@ -158,24 +152,50 @@ namespace Chess.Modèles
 
         private bool SimulerCoupEtVerifierEchec(Coup coup, Piece pieceDepart, Piece pieceDestination)
         {
-            // Sauvegarde de la position initiale
+            // Sauvegarde de la position + HasMoved
             Position positionInitiale = pieceDepart.Position;
 
-            // Simulation du coup
+            bool hasMovedInitial = false;
+            bool pieceHasMoved = false;
+
+            if (pieceDepart.Type == TypePiece.Pion)
+            {
+                Pion pion = (Pion)pieceDepart;
+                hasMovedInitial = pion.HasMoved;
+                pieceHasMoved = true;
+            } else if (pieceDepart.Type == TypePiece.Roi)
+            {
+                Roi roi = (Roi)pieceDepart;
+                hasMovedInitial = roi.HasMoved;
+                pieceHasMoved = true;
+            } else if (pieceDepart.Type == TypePiece.Tour)
+            {
+                Tour tour = (Tour)pieceDepart;
+                hasMovedInitial = tour.HasMoved;
+                pieceHasMoved = true;
+            }
+
+            // Simulation
             Plateau.SetPiece(coup.Depart, null);
             Plateau.SetPiece(coup.Destination, pieceDepart);
             pieceDepart.SetPosition(coup.Destination);
 
-            // Vérifier l'échec pour le roi de la même couleur que la pièce déplacée
             bool enEchec = Plateau.EstEnEchec(pieceDepart.IsWhite);
 
-            // Rollback de la simulation
+            // Rollback
             Plateau.SetPiece(coup.Depart, pieceDepart);
             Plateau.SetPiece(coup.Destination, pieceDestination);
             pieceDepart.SetPosition(positionInitiale);
+            if (pieceHasMoved)
+            {
+                if (pieceDepart.Type == TypePiece.Pion) ((Pion)pieceDepart).HasMoved = hasMovedInitial;
+                else if (pieceDepart.Type == TypePiece.Roi) ((Roi)pieceDepart).HasMoved = hasMovedInitial;
+                else if (pieceDepart.Type == TypePiece.Tour) ((Tour)pieceDepart).HasMoved = hasMovedInitial;
+            }
 
             return enEchec;
         }
+
 
         private bool ValiderCoupBasique(Coup coup, out Piece pieceDepart, out Piece pieceDestination)
         {

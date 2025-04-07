@@ -4,7 +4,7 @@ namespace Chess.Modèles.Pièces
 {
     public class Tour : Piece
     {
-        public bool HasMoved { get; private set; } = false;
+        public bool HasMoved { get; set; } = false;
 
         public Tour(bool isWhite, Position position) : base(isWhite, position)
         {
